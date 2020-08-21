@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoppingCart/blocs/bloc/products_bloc.dart';
+import 'package:shoppingCart/screens/cart_screen.dart';
+import 'package:shoppingCart/simple_bloc_observer.dart';
 import 'package:shoppingCart/widgets/all_pdts.dart';
+import 'package:shoppingCart/widgets/cart_item.dart';
 import 'package:shoppingCart/widgets/category.dart';
 
+import 'blocs/cart_bloc/cart_bloc.dart';
+import 'blocs/product_bloc/products_bloc.dart';
+
 void main() {
+  Bloc.observer = SimpleBlocObserver();
   runApp(MyApp());
 }
 
@@ -15,6 +21,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<ProductsBloc>(create: (_) => ProductsBloc()..add(ProductLoadedEvent()),
         ),
+        BlocProvider<CartBloc>(create: (_) => CartBloc()..add(CartStarted())),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -28,7 +35,7 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           '/': (context) => MyHomePage(title: 'Shopping Cart'),
-          //'/cart': (context) => MyCart(),
+          '/cart': (context) => CartScreen(),
         },
       ),
     );
@@ -57,7 +64,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 Icons.shopping_cart,
                 size: 30,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/cart');
+              }),
         ],
       ),
       drawer: Drawer(),

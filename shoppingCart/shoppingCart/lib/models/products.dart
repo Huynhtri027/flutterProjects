@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:shoppingCart/models/item.dart';
 
 class Product {
   final String id;
@@ -84,4 +85,8 @@ class Products {
   Product findById(String id) {
     return _items.firstWhere((pdt) => pdt.id == id);
   }
+
+  Products getById(int id) =>  Products();
+
+  Products getByPosition(int position) => getById(position);
 }

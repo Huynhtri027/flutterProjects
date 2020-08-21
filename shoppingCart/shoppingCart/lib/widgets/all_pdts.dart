@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoppingCart/blocs/bloc/products_bloc.dart';
+import 'package:shoppingCart/blocs/product_bloc/products_bloc.dart';
 import 'package:shoppingCart/widgets/pdt_item.dart';
 //import '../models/products.dart';
 //import './pdt_item.dart';
@@ -24,6 +24,7 @@ class AllProducts extends StatelessWidget {
               return PdtItem(
                 name: state.product.items[i].name,
                 imageUrl: state.product.items[i].imgUrl,
+                items: state.product.items[i],
               );},
         );
       }
