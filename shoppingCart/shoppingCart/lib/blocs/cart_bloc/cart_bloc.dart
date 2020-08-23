@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:shoppingCart/models/cart.dart';
 import 'package:shoppingCart/models/item.dart';
 import 'package:shoppingCart/models/products.dart';
 
@@ -44,5 +43,7 @@ Stream<CartState> _mapCartItemAddedToState(CartState state, CartItemAdded event)
     } catch(_) {
       yield CartError();
     }
+    //print(currentState.cartItem[5]);
   }
+  
 }

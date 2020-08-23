@@ -5,7 +5,6 @@ import 'package:shoppingCart/simple_bloc_observer.dart';
 import 'package:shoppingCart/widgets/all_pdts.dart';
 import 'package:shoppingCart/widgets/cart_item.dart';
 import 'package:shoppingCart/widgets/category.dart';
-
 import 'blocs/cart_bloc/cart_bloc.dart';
 import 'blocs/product_bloc/products_bloc.dart';
 
@@ -66,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onPressed: () {
                 Navigator.of(context).pushNamed('/cart');
+                //Navigator.pushNamed(context, '/cart');
               }),
         ],
       ),

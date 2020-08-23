@@ -15,6 +15,9 @@ class CartLoaded extends CartState {
 
   const CartLoaded({this.cartItem});
 
+  int get quantity => 
+    cartItem.fold(0, (total, current) => total + current.quantity);
+
   @override
   List<Object> get props => [cartItem];
 }

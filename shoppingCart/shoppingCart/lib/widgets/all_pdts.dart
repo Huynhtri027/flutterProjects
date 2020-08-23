@@ -22,12 +22,14 @@ class AllProducts extends StatelessWidget {
           itemBuilder: (BuildContext ctx, int i){
               //value: state.product.items[i]
               return PdtItem(
+                id: state.product.items[i].id,
                 name: state.product.items[i].name,
                 imageUrl: state.product.items[i].imgUrl,
                 items: state.product.items[i],
               );},
         );
       }
+      return CircularProgressIndicator();
     });
     //final productData=Provider.of<Products>(context);
     //final pdts=productData.items;

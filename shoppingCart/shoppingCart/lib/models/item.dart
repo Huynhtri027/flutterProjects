@@ -10,8 +10,9 @@ class Item {
   final double price;
   final String category;
   final String description;
+  final int quantity;
 
-  Item({this.id, this.name, this.imgUrl, this.price, this.category, this.description});
+  Item({this.id, this.name, this.imgUrl, this.price, this.category, this.description, this.quantity});
 
   // @override
   // List get props => [id, name, imgUrl, price, category, description];
@@ -33,7 +34,7 @@ class Item {
           (existingCartItem) => Item(
               id: existingCartItem.id,
               name: existingCartItem.name,
-              //quantity: existingCartItem.quantity + 1,
+              quantity: existingCartItem.quantity + 1,
               price: existingCartItem.price,
               imgUrl: existingCartItem.imgUrl,
               category: existingCartItem.category,
@@ -44,13 +45,14 @@ class Item {
           () => Item(
                 id: pdtid,
                 name: name,
-                //quantity: 1,
+                quantity: 1,
                 price: price,
                 imgUrl: imgUrl,
                 category: category,
                 description: description
               ));
     }
+    print(items);
   }
 }
 
