@@ -26,6 +26,9 @@ class AllProducts extends StatelessWidget {
                 name: state.product.items[i].name,
                 imageUrl: state.product.items[i].imgUrl,
                 items: state.product.items[i],
+                category: state.product.items[i].category,
+                price: state.product.items[i].price,
+                description: state.product.items[i].description
               );},
         );
       }

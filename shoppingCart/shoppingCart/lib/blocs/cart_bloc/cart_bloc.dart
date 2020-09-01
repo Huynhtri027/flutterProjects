@@ -19,31 +19,53 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     if (event is CartStarted) {
       yield* _mapCartStartedToState();
     } else if (event is CartItemAdded) {
-      yield* _mapCartItemAddedToState(state,event);
+      yield* _mapCartItemAddedToState(state, event);
     }
   }
 }
 
 Stream<CartState> _mapCartStartedToState() async* {
   yield CartLoading();
-  try{
+  try {
     yield CartLoaded(cartItem: []);
-  } catch(_) {
+  } catch (_) {
     yield CartError();
   }
 }
 
-Stream<CartState> _mapCartItemAddedToState(CartState state, CartItemAdded event) async* {
+Stream<CartState> _mapCartItemAddedToState(
+    CartState state, CartItemAdded event) async* {
   final currentState = state;
   if (currentState is CartLoaded) {
     try {
-      yield CartLoaded(
-        cartItem: List.from(currentState.cartItem)..add(event.cartItem),
-      );
-    } catch(_) {
+      if (currentState.cartItem.length > 0) {
+        for (int i = 0; i < currentState.cartItem.length; i++) {
+          if (currentState.cartItem[i].id.contains(event.cartItem.id)) {
+            print("Removed at" + currentState.cartItem[i].id);
+            currentState.cartItem.removeAt(i);
+            yield CartLoaded(
+              cartItem: List.from(currentState.cartItem)..add(event.cartItem),
+            );
+          } else {
+            //print("Added first item");
+            yield CartLoaded(
+              //   (item) => event.cartItem.id == currentState.cartItem.contains(event.cartItem.id))..add(event.cartItem);
+
+              cartItem: List.from(currentState.cartItem)..add(event.cartItem),
+            );
+            print("Got the new item");
+            //break;
+          }
+        }
+      } else {
+        yield CartLoaded(
+          cartItem: List.from(currentState.cartItem)..add(event.cartItem),
+        );
+        print("Added first item");
+      }
+    } catch (_) {
       yield CartError();
     }
-    //print(currentState.cartItem[5]);
+    //print(currentState.cartItem);
   }
-  
 }

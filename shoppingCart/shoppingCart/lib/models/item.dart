@@ -27,7 +27,7 @@ class Item {
     return _items.length;
   }
 
-  void addItem(String pdtid, String name, double price, String category , String imgUrl, String description) {
+  void addItem(String pdtid, String name, double price, String category , String imgUrl,String description) {
     if (_items.containsKey(pdtid)) {
       _items.update(
           pdtid,
@@ -37,8 +37,8 @@ class Item {
               quantity: existingCartItem.quantity + 1,
               price: existingCartItem.price,
               imgUrl: existingCartItem.imgUrl,
-              category: existingCartItem.category,
-              description: existingCartItem.description));
+              category: existingCartItem.category));
+              //description: existingCartItem.description));
     } else {
       _items.putIfAbsent(
           pdtid,
@@ -48,11 +48,14 @@ class Item {
                 quantity: 1,
                 price: price,
                 imgUrl: imgUrl,
-                category: category,
-                description: description
+                category: category
+                //description: description
               ));
     }
-    print(items);
+    // print(_items);
+    // List cartR = [];
+    // cartR = _items.map((key, value) => cartR.add(Item())) as List;
+    print(_items);
   }
 }
 
