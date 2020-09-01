@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppingCart/screens/cart_screen.dart';
 import 'package:shoppingCart/simple_bloc_observer.dart';
 import 'package:shoppingCart/widgets/all_pdts.dart';
-import 'package:shoppingCart/widgets/cart_item.dart';
 import 'package:shoppingCart/widgets/category.dart';
 import 'blocs/cart_bloc/cart_bloc.dart';
 import 'blocs/product_bloc/products_bloc.dart';
@@ -23,6 +22,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<CartBloc>(create: (_) => CartBloc()..add(CartStarted())),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         initialRoute: '/',
         theme: ThemeData(
@@ -65,7 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onPressed: () {
                 Navigator.of(context).pushNamed('/cart');
-                //Navigator.pushNamed(context, '/cart');
               }),
         ],
       ),

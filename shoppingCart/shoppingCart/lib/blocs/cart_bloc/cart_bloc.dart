@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:shoppingCart/models/item.dart';
-import 'package:shoppingCart/models/products.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
@@ -49,12 +48,9 @@ Stream<CartState> _mapCartItemAddedToState(
           } else {
             //print("Added first item");
             yield CartLoaded(
-              //   (item) => event.cartItem.id == currentState.cartItem.contains(event.cartItem.id))..add(event.cartItem);
-
               cartItem: List.from(currentState.cartItem)..add(event.cartItem),
             );
             print("Got the new item");
-            //break;
           }
         }
       } else {
@@ -66,6 +62,5 @@ Stream<CartState> _mapCartItemAddedToState(
     } catch (_) {
       yield CartError();
     }
-    //print(currentState.cartItem);
   }
 }
