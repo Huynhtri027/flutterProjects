@@ -74,19 +74,21 @@ class LoginPage extends StatelessWidget {
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
-          return RaisedButton.icon(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+          return Center(
+            child: RaisedButton.icon(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              icon: Icon(FontAwesomeIcons.google, color: Colors.white),
+              onPressed: () {
+                BlocProvider.of<LoginBloc>(context).add(
+                  LoginWithGooglePressed(),
+                );
+              },
+              label: Text('Sign in with Google',
+                  style: TextStyle(color: Colors.white)),
+              color: Colors.redAccent,
             ),
-            icon: Icon(FontAwesomeIcons.google, color: Colors.white),
-            onPressed: () {
-              BlocProvider.of<LoginBloc>(context).add(
-                LoginWithGooglePressed(),
-              );
-            },
-            label: Text('Sign in with Google',
-                style: TextStyle(color: Colors.white)),
-            color: Colors.redAccent,
           );
         },
       ),

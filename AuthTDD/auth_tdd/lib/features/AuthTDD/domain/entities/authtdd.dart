@@ -1,9 +1,9 @@
-import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthUser extends Equatable {
-  final String email;
+abstract class AuthUser implements User {
+  String email;
 
-  AuthUser(this.email);
+  AuthUser({this.email});
 
   @override
   List<Object> get props => [email];

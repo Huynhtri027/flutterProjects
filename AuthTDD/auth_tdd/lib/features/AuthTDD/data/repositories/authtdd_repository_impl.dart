@@ -1,5 +1,4 @@
 import 'package:auth_tdd/core/error/failures.dart';
-import 'package:auth_tdd/features/AuthTDD/domain/entities/authtdd.dart';
 import 'package:auth_tdd/features/AuthTDD/domain/repositories/authtdd_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,12 +13,7 @@ class AuthTDDRepositoryImpl implements AuthTDDRepository {
     _googleSignIn = googleSignIn ?? GoogleSignIn();
   
   @override
-  Future<Either<Failures, AuthUser>> getFirebaseAuth() async {
-    signInWithGoogle();
-    print(getUser());
-  }
-
-  Future<User> signInWithGoogle() async {
+  Future<Either<Failures, User>> getFirebaseAuth() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
@@ -28,7 +22,17 @@ class AuthTDDRepositoryImpl implements AuthTDDRepository {
       idToken: googleAuth.idToken,
     );
     await _firebaseAuth.signInWithCredential(credential);
-    return _firebaseAuth.currentUser;
+    return Right(_firebaseAuth.currentUser);
+    // final UserCredential user = (await _firebaseAuth.signInWithCredential(credential));
+    // return Right(_firebaseAuth.currentUser);
+    //print(getUser());
+  }
+
+  Future<void> signInWithCredentials(String email, String password) {
+    return _firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
   }
 
   Future<void> signOut() async {
@@ -43,8 +47,9 @@ class AuthTDDRepositoryImpl implements AuthTDDRepository {
     return currentUser != null;
   }
 
-  Future<void> getUser() async {
-    //return (await _firebaseAuth.currentUser).email;
+  Future<String> getUser() async {
     print(_firebaseAuth.currentUser.email);
+    return (await _firebaseAuth.currentUser).email;
+    
   }
 }
