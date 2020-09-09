@@ -25,7 +25,7 @@ class TodosRepositoryImpl implements TodosRepository {
     }
   
     @override
-    Future<Either<Failure, Stream<List<TodoModel>>>> todos() async {
+    Either<Failure, Stream<List<TodoModel>>> todos(){
       return Right(todosDataSource.todos());
     }
   

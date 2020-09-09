@@ -7,13 +7,13 @@ import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
 import 'package:todosTDD/features/todosTDD/domain/entities/todos/todo_entity.dart';
 import 'package:todosTDD/features/todosTDD/domain/repositories/todos/todos_repository.dart';
 
-class DisplayTodo extends UseCase<Stream<List<TodoModel>>, NoParams> {
+class DisplayTodo extends UseCaseStream<Stream<List<TodoModel>>, NoParams> {
   final TodosRepository todosRepository;
 
   DisplayTodo(this.todosRepository);
 
   @override
-  Future<Either<Failure, Stream<List<TodoModel>>>> call(NoParams params) {
+  Either<Failure, Stream<List<TodoModel>>> streamCall(NoParams params) {
     return todosRepository.todos();
   }
 }

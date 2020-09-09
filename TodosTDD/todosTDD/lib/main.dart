@@ -1,48 +1,50 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todosTDD/features/todosTDD/presentation/blocs/blocs.dart';
 
-void main() {
+import 'features/todosTDD/presentation/blocs/simple_bloc_delegate.dart';
+import 'features/todosTDD/presentation/screens/home_screen.dart';
+import 'locator.dart' as di;
+import 'locator.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = SimpleBlocObserver();
+  await di.init();
+  //await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-          ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<TodosBloc>(
+            create: (_) => sl<TodosBloc>()..add(LoadTodos()))
+      ],
+      child: MaterialApp(
+        title: 'TodosTDD Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
+        routes: {
+          '/': (context) {
+            return BlocBuilder<TodosBloc, TodosState>(
+                builder: (context, state) {
+              if (state is TodosLoaded) {
+                return MultiBlocProvider(providers: [
+                  BlocProvider<TodosBloc>(
+                      create: (_) => sl<TodosBloc>()..add(LoadTodos()))
+                ], child: HomeScreen());
+              }
+              return Center(child: CircularProgressIndicator());
+            });
+          }
+        },
+        //home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }
