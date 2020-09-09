@@ -14,7 +14,7 @@ abstract class TodosRepository {
 
   Future<Either<Failure, TodoEntity>> deleteTodo(TodoModel todo);
 
-  Stream<Either<Failure, List<TodoEntity>>> todos();
+  Future<Either<Failure, Stream<List<TodoModel>>>> todos();
 
   Future<Either<Failure, TodoEntity>> updateTodo(TodoModel todo);
 }

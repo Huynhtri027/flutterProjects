@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
+import 'package:todosTDD/features/todosTDD/domain/entities/todos/todo_entity.dart';
 
 abstract class TodosDataSource {
 
   Future<void> addNewTodo(TodoModel todo);
   Future<TodoModel> deleteTodo(TodoModel todo);
-  Future<TodoModel> todos(TodoModel todo);
+  Stream<List<TodoModel>> todos();
   Future<TodoModel> updateTodo(TodoModel todo);
   
 
@@ -13,7 +14,7 @@ abstract class TodosDataSource {
 
 class TodosDataSourceImpl implements TodosDataSource {
 
-  final todoCollection = FirebaseFirestore.instance.collection('todos');
+  final todoCollection = Firestore.instance.collection('todos');
 
   @override
   Future<void> addNewTodo(TodoModel todo) {
@@ -27,9 +28,12 @@ class TodosDataSourceImpl implements TodosDataSource {
     }
   
     @override
-    Future<TodoModel> todos(TodoModel todo) {
-      // TODO: implement todos
-      throw UnimplementedError();
+    Stream<List<TodoModel>> todos() {
+      return todoCollection.snapshots().map((snapshot) {
+      return snapshot.documents
+          .map((doc) => TodoModel.fromEntity(TodoEntity.fromSnapshot(doc)))
+          .toList();
+    });
     }
   
     @override
