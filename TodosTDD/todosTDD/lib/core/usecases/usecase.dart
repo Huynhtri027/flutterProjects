@@ -14,5 +14,5 @@ class NoParams extends Equatable {
 }
 
 abstract class UseCaseStream<Type, Params> {
-  Either<Failure, Type> streamCall(Params params);
+  Future<Either<Failure, Type>> call(Params params);
 }

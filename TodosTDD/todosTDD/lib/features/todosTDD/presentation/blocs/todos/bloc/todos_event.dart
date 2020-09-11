@@ -51,10 +51,12 @@ class ClearCompleted extends TodosEvent {}
 class ToggleAll extends TodosEvent {}
 
 class TodosUpdated extends TodosEvent {
-  final Stream<List<TodoModel>> todos;
+  final List<TodoModel> todos;
 
   const TodosUpdated(this.todos);
 
   @override
   List<Object> get props => [todos];
 }
+
+class GetTodos extends TodosEvent {}

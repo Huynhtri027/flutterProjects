@@ -11,7 +11,7 @@ abstract class TodosState extends Equatable {
 class TodosLoading extends TodosState {}
 
 class TodosLoaded extends TodosState {
-  final Stream<List<TodoModel>> todos;
+  final List<TodoModel> todos;
 
   TodosLoaded(this.todos);
 

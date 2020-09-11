@@ -22,5 +22,5 @@ Future<void> init() async {
   sl.registerLazySingleton<TodosDataSource>(() => TodosDataSourceImpl());
 
   //BLocs
-  sl.registerFactory(() => TodosBloc(todosRepository: sl()));
+  sl.registerFactory(() => TodosBloc(displayTodo: sl())); //Passing USecases object here
 }
