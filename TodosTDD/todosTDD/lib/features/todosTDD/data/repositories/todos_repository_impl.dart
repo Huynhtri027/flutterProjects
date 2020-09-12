@@ -14,7 +14,7 @@ class TodosRepositoryImpl implements TodosRepository {
   
   
   @override
-  Future<Either<Failure, void>> addNewTodo(TodoModel todo) async{
+  Future<void> addNewTodo(TodoModel todo) async{
       return Right(todosDataSource.addNewTodo(todo));
     }
   
@@ -25,17 +25,17 @@ class TodosRepositoryImpl implements TodosRepository {
     }
   
     @override
-    Future<Either<Failure, List<TodoModel>>> todos() async{
-      //return todosDataSource.todos();
-      return await _getTodos(() {
-        return todosDataSource.todos();
-      });
+    Stream<List<TodoModel>> todos() {
+      return todosDataSource.todos();
+      // return await _getTodos(() {
+      //   return todosDataSource.todos();
+      // });
     }
 
-    Future<Either<Failure, List<TodoModel>>> _getTodos(Future<List<TodoModel>> Function() param0) async{
-      final getTodos = await todos();
-      return getTodos;
-    }
+    // Future<Either<Failure, List<TodoModel>>> _getTodos(Future<List<TodoModel>> Function() param0) async{
+    //   final getTodos = await todos();
+    //   return getTodos;
+    // }
   
     @override
     Future<Either<Failure, TodoEntity>> updateTodo(TodoModel todo) {

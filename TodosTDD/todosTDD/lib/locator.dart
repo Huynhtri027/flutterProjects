@@ -4,7 +4,8 @@ import 'package:todosTDD/features/todosTDD/data/repositories/todos_repository_im
 import 'package:todosTDD/features/todosTDD/domain/repositories/todos/todos_repository.dart';
 import 'package:todosTDD/features/todosTDD/domain/usecases/todos/add_new_todo.dart';
 import 'package:todosTDD/features/todosTDD/domain/usecases/todos/display_todos.dart';
-import 'package:todosTDD/features/todosTDD/presentation/blocs/blocs.dart';
+import 'features/todosTDD/presentation/blocs/filtered_todos/filtered_todos_barrel.dart';
+import 'features/todosTDD/presentation/blocs/todos/todo_barrel.dart';
 
 final sl = GetIt.instance;
 
@@ -17,10 +18,13 @@ Future<void> init() async {
   //Usecases
   sl.registerLazySingleton(() => AddNewTodo(sl()));
   sl.registerLazySingleton(() => DisplayTodo(sl()));
+  
+  
 
   //DataSources
   sl.registerLazySingleton<TodosDataSource>(() => TodosDataSourceImpl());
 
   //BLocs
-  sl.registerFactory(() => TodosBloc(displayTodo: sl())); //Passing USecases object here
+  sl.registerFactory(() => TodosBloc(displayTodo: sl(), addNewTodo: sl())); //Passing USecases object here
+  sl.registerFactory(() => FilteredTodosBloc(todosBloc: sl()));
 }

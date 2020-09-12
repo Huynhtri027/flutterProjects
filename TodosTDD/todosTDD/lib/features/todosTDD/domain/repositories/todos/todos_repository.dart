@@ -10,11 +10,11 @@ import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
 import 'package:todosTDD/features/todosTDD/domain/entities/todos/todo_entity.dart';
 
 abstract class TodosRepository {
-  Future<Either<Failure, void>> addNewTodo(TodoModel todo);
+  Future<void> addNewTodo(TodoModel todo);
 
   Future<Either<Failure, TodoEntity>> deleteTodo(TodoModel todo);
 
-  Future<Either<Failure, List<TodoModel>>> todos();
+  Stream<List<TodoModel>> todos();
 
   Future<Either<Failure, TodoEntity>> updateTodo(TodoModel todo);
 }

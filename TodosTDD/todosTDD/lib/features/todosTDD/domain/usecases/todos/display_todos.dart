@@ -13,16 +13,7 @@ class DisplayTodo extends UseCaseStream<List<TodoModel>, NoParams> {
   DisplayTodo(this.todosRepository);
 
   @override
-  Future<Either<Failure, List<TodoModel>>> call(NoParams params) async{
+  Stream<List<TodoModel>> call(NoParams params) {
     return todosRepository.todos();
   }
-}
-
-class Params extends Equatable {
-  final TodoModel todo;
-
-  Params({@required this.todo});
-
-  @override
-  List<Object> get props => [todo];
 }

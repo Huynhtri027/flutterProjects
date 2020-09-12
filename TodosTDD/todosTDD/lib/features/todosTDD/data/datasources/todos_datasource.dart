@@ -5,7 +5,7 @@ import 'package:todosTDD/features/todosTDD/domain/entities/todos/todo_entity.dar
 abstract class TodosDataSource {
   Future<void> addNewTodo(TodoModel todo);
   Future<TodoModel> deleteTodo(TodoModel todo);
-  Future<List<TodoModel>> todos();
+  Stream<List<TodoModel>> todos();
   Future<TodoModel> updateTodo(TodoModel todo);
 }
 
@@ -23,23 +23,23 @@ class TodosDataSourceImpl implements TodosDataSource {
     throw UnimplementedError();
   }
 
-  @override
-  Future<List<TodoModel>> todos() async{
-    QuerySnapshot qShot = await todoCollection.getDocuments();
-
-    return qShot.documents
-        .map((doc) => TodoModel.fromEntity(TodoEntity.fromSnapshot(doc)))
-        .toList();
-  }
-
   // @override
-  // Stream<List<TodoModel>> todos() {
-  //   return todoCollection.snapshots().map((snapshot) {
-  //     return snapshot.documents
-  //         .map((doc) => TodoModel.fromEntity(TodoEntity.fromSnapshot(doc)))
-  //         .toList();
-  //   });
+  // Future<List<TodoModel>> todos() async{
+  //   QuerySnapshot qShot = await todoCollection.getDocuments();
+
+  //   return qShot.documents
+  //       .map((doc) => TodoModel.fromEntity(TodoEntity.fromSnapshot(doc)))
+  //       .toList();
   // }
+
+  @override
+  Stream<List<TodoModel>> todos() {
+    return todoCollection.snapshots().map((snapshot) {
+      return snapshot.documents
+          .map((doc) => TodoModel.fromEntity(TodoEntity.fromSnapshot(doc)))
+          .toList();
+    });
+  }
 
   @override
   Future<TodoModel> updateTodo(TodoModel todo) {
