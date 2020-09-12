@@ -4,9 +4,9 @@ import 'package:todosTDD/features/todosTDD/domain/entities/todos/todo_entity.dar
 
 abstract class TodosDataSource {
   Future<void> addNewTodo(TodoModel todo);
-  Future<TodoModel> deleteTodo(TodoModel todo);
+  Future<void> deleteTodo(TodoModel todo);
   Stream<List<TodoModel>> todos();
-  Future<TodoModel> updateTodo(TodoModel todo);
+  Future<void> updateTodo(TodoModel todo);
 }
 
 class TodosDataSourceImpl implements TodosDataSource {
@@ -18,9 +18,8 @@ class TodosDataSourceImpl implements TodosDataSource {
   }
 
   @override
-  Future<TodoModel> deleteTodo(TodoModel todo) {
-    // TODO: implement deleteTodo
-    throw UnimplementedError();
+  Future<void> deleteTodo(TodoModel todo) {
+    return todoCollection.document(todo.id).delete();
   }
 
   // @override
@@ -42,8 +41,9 @@ class TodosDataSourceImpl implements TodosDataSource {
   }
 
   @override
-  Future<TodoModel> updateTodo(TodoModel todo) {
-    // TODO: implement updateTodo
-    throw UnimplementedError();
+  Future<void> updateTodo(TodoModel todo) {
+    return todoCollection
+        .document(todo.id)
+        .updateData(todo.toEntity().toDocument());
   }
 }

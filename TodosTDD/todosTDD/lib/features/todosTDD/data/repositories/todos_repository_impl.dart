@@ -15,13 +15,12 @@ class TodosRepositoryImpl implements TodosRepository {
   
   @override
   Future<void> addNewTodo(TodoModel todo) async{
-      return Right(todosDataSource.addNewTodo(todo));
+      return todosDataSource.addNewTodo(todo);
     }
   
     @override
-    Future<Either<Failure, TodoEntity>> deleteTodo(TodoModel todo) {
-      // TODO: implement deleteTodo
-      throw UnimplementedError();
+    Future<void> deleteTodo(TodoModel todo) {
+      return todosDataSource.deleteTodo(todo);
     }
   
     @override
@@ -38,9 +37,8 @@ class TodosRepositoryImpl implements TodosRepository {
     // }
   
     @override
-    Future<Either<Failure, TodoEntity>> updateTodo(TodoModel todo) {
-    // TODO: implement updateTodo
-    throw UnimplementedError();
+    Future<void> updateTodo(TodoModel todo) {
+    return todosDataSource.updateTodo(todo);
   }
 
 }

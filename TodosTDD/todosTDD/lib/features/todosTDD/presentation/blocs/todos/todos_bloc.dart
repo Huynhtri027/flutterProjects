@@ -4,27 +4,32 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:todosTDD/core/usecases/usecase.dart';
 import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
-import 'package:todosTDD/features/todosTDD/domain/usecases/todos/add_new_todo.dart';
-import 'package:todosTDD/features/todosTDD/domain/usecases/todos/display_todos.dart';
+import 'package:todosTDD/features/todosTDD/domain/usecases/todos/todos_usecases.dart';
 
 import 'package:todosTDD/features/todosTDD/presentation/blocs/todos/todo_barrel.dart';
 
 class TodosBloc extends Bloc<TodosEvent, TodosState> {
 //  final TodosRepository _todosRepository;   
   StreamSubscription _todosSubscription; //Only UseCases we are instatiating here.
-  DisplayTodo _displayTodo;
-  AddNewTodo _addNewTodo;
+  DisplayTodoUC _displayTodo;
+  AddNewTodoUC _addNewTodo;
+  UpdateTodoUC _updateTodo;
+  DeleteTodoUC _deleteTodo;
 
   TodosBloc({
     //@required TodosRepository todosRepository,
-    @required DisplayTodo displayTodo,
-    @required AddNewTodo addNewTodo,
+    @required DisplayTodoUC displayTodo,
+    @required AddNewTodoUC addNewTodo,
+    @required UpdateTodoUC updateTodo,
+    @required DeleteTodoUC deleteTodo,
   }): //assert(todosRepository!=null),
       assert(displayTodo!=null),
       assert(addNewTodo!=null),
       //_todosRepository = todosRepository,
       _displayTodo = displayTodo,
       _addNewTodo = addNewTodo,
+      _updateTodo = updateTodo,
+      _deleteTodo = deleteTodo,
       super(TodosLoading());
 
   /*TodosState get initialState => TodosLoading();*/
@@ -63,11 +68,11 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
   }
 
   Stream<TodosState> _mapUpdateTodoToState(UpdateTodo event) async* {
-    //_todosRepository.updateTodo(event.updatedTodo);
+    _updateTodo.call(Params(todo: event.updatedTodo));
   }
 
   Stream<TodosState> _mapDeleteTodoToState(DeleteTodo event) async* {
-   // _todosRepository.deleteTodo(event.todo);
+    _deleteTodo.call(Params(todo: event.todo));
   }
 
   Stream<TodosState> _mapToggleAllToState() async* {
