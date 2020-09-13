@@ -15,7 +15,7 @@ class AddNewTodoUC implements UseCase<void, Params> {
   }
 }
 
-class DisplayTodoUC extends UseCaseStream<List<TodoModel>, NoParams> {
+class DisplayTodoUC extends UseCaseStream<List<TodoModel>, NoParams> {    //And in case of List<TodoModel> we can pass ProductDetailsResults and can be defined below
   final TodosRepository todosRepository;
 
   DisplayTodoUC(this.todosRepository);
@@ -48,7 +48,7 @@ class UpdateTodoUC extends UseCase<void, Params> {
   }
 }
 
-class Params extends Equatable {
+class Params extends Equatable {    //Here we can provide ProductDetailsParams here
   final TodoModel todo;
 
   Params({@required this.todo});

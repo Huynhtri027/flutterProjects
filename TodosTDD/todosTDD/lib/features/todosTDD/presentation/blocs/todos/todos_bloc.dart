@@ -9,30 +9,25 @@ import 'package:todosTDD/features/todosTDD/domain/usecases/todos/todos_usecases.
 import 'package:todosTDD/features/todosTDD/presentation/blocs/todos/todo_barrel.dart';
 
 class TodosBloc extends Bloc<TodosEvent, TodosState> {
-//  final TodosRepository _todosRepository;   
-  StreamSubscription _todosSubscription; //Only UseCases we are instatiating here.
+  StreamSubscription
+      _todosSubscription; //Only UseCases we are instatiating here.
   DisplayTodoUC _displayTodo;
   AddNewTodoUC _addNewTodo;
   UpdateTodoUC _updateTodo;
   DeleteTodoUC _deleteTodo;
 
   TodosBloc({
-    //@required TodosRepository todosRepository,
     @required DisplayTodoUC displayTodo,
     @required AddNewTodoUC addNewTodo,
     @required UpdateTodoUC updateTodo,
     @required DeleteTodoUC deleteTodo,
-  }): //assert(todosRepository!=null),
-      assert(displayTodo!=null),
-      assert(addNewTodo!=null),
-      //_todosRepository = todosRepository,
-      _displayTodo = displayTodo,
-      _addNewTodo = addNewTodo,
-      _updateTodo = updateTodo,
-      _deleteTodo = deleteTodo,
-      super(TodosLoading());
-
-  /*TodosState get initialState => TodosLoading();*/
+  })  : assert(displayTodo != null),
+        assert(addNewTodo != null),
+        _displayTodo = displayTodo,
+        _addNewTodo = addNewTodo,
+        _updateTodo = updateTodo,
+        _deleteTodo = deleteTodo,
+        super(TodosLoading());
 
   @override
   Stream<TodosState> mapEventToState(
@@ -57,13 +52,12 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
 
   Stream<TodosState> _mapLoadTodosToState() async* {
     _todosSubscription?.cancel();
-     final failurOrTodos = _displayTodo.call(NoParams());
-    _todosSubscription = failurOrTodos.listen(
-      (todos) => add(TodosUpdated(todos))); 
+    final failurOrTodos = _displayTodo.call(NoParams());
+    _todosSubscription =
+        failurOrTodos.listen((todos) => add(TodosUpdated(todos)));
   }
 
   Stream<TodosState> _mapAddTodoToState(AddTodo event) async* {
-    
     _addNewTodo.call(Params(todo: event.todo));
   }
 
@@ -83,7 +77,6 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
           .map((todo) => todo.copyWith(complete: !allComplete))
           .toList();
       updatedTodos.forEach((updatedTodo) {
-        //_todosRepository.updateTodo(updatedTodo);
       });
     }
   }
@@ -94,7 +87,6 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
       final List<TodoModel> completedTodos =
           currentState.todos.where((todo) => todo.complete).toList();
       completedTodos.forEach((completedTodo) {
-        //_todosRepository.deleteTodo(completedTodo);
       });
     }
   }
@@ -108,20 +100,4 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
     _todosSubscription?.cancel();
     return super.close();
   }
-
-  // Stream<TodosState> _mapLoadTodosToState(
-  //   Either<Failure,List<TodoModel>> failureOrTodos) async* {
-  //   try {
-  //     _todosSubscription?.cancel();
-  //     //Stream<Either<Failure, Stream<List<TodoModel>>>> todos = _todosRepository.todos().asStream();
-  //     failureOrTodos.fold(
-  //       (failure) => TodosNotLoaded(), 
-  //       (todos) => add(TodosUpdated(todos)));
-  //     //failureOrTodos.fold(, (previous, element) => null)
-  //       //print(todos);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-
 }
