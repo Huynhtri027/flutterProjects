@@ -58,15 +58,15 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
   }
 
   Stream<TodosState> _mapAddTodoToState(AddTodo event) async* {
-    _addNewTodo.call(Params(todo: event.todo));
+    _addNewTodo.call(TodosParams(todo: event.todo));
   }
 
   Stream<TodosState> _mapUpdateTodoToState(UpdateTodo event) async* {
-    _updateTodo.call(Params(todo: event.updatedTodo));
+    _updateTodo.call(TodosParams(todo: event.updatedTodo));
   }
 
   Stream<TodosState> _mapDeleteTodoToState(DeleteTodo event) async* {
-    _deleteTodo.call(Params(todo: event.todo));
+    _deleteTodo.call(TodosParams(todo: event.todo));
   }
 
   Stream<TodosState> _mapToggleAllToState() async* {
