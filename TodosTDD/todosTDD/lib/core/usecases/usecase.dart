@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 abstract class BaseUseCase<Result, Params> {
-  Stream<Result> call(Params params);
+  Future<Result> call(Params params);
   
 }
 

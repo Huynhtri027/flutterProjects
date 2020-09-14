@@ -6,7 +6,7 @@ import 'package:todosTDD/features/todosTDD/domain/repositories/todos/todos_repos
 
 import '../../../../../locator.dart';
 
-abstract class TodosUsecase implements BaseUseCase<TodosResult,TodosParams> {}
+abstract class TodosUsecase implements BaseUseCase<TodosResult,NoParams> {}
 
 class AddNewTodoUC {
 
@@ -26,9 +26,11 @@ class DisplayTodoUC implements TodosUsecase{
   DisplayTodoUC(this.todosRepository);
 
   @override
-  TodosResult call(NoParams params) {
+  Future<TodosResult> call(NoParams params) async{
       return TodosResult(
-      todosModel: todosRepository.todos());
+      todosModel: await todosRepository.todos(),
+      );
+
    //And in case of List<TodoModel> we can pass ProductDetailsResults and can be defined below
 
   // @override
@@ -70,7 +72,7 @@ class TodosParams extends Equatable {    //Here we can provide ProductDetailsPar
 }
 
 class TodosResult extends UseCaseResult {
-  final Stream<List<TodoModel>> todosModel;
+  final List<TodoModel> todosModel;
 
   TodosResult({this.todosModel}) : super(null, false);
 
@@ -82,3 +84,5 @@ class TodosResult extends UseCaseResult {
   // TODO: implement result
   bool get result => throw UnimplementedError();
 }
+
+class TodosNoParams {}
