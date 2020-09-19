@@ -17,15 +17,58 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 // final SnackBar snackBar = const SnackBar(content: Text('Showing Snackbar'));
 
-
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final FirebaseAuthRepository _firebaseAuthRepository;
   final String name;
 
-  HomePage({Key key,@required this.name, @required FirebaseAuthRepository firebaseAuthRepository})
-    : assert(firebaseAuthRepository != null),
-      _firebaseAuthRepository = firebaseAuthRepository,
-      super(key : key);
+  HomePage(
+      {Key key,
+      @required this.name,
+      @required FirebaseAuthRepository firebaseAuthRepository})
+      : assert(firebaseAuthRepository != null),
+        _firebaseAuthRepository = firebaseAuthRepository,
+        super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  int _currentIndex = 0;
+
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: _tabList.length,);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  List<Widget> _tabList = [
+    Container(
+      color: Colors.teal,
+      child: Center(child: Text('data')),
+    ),
+    Container(
+      color: Colors.red,
+    ),
+    Container(
+      color: Colors.purple,
+    )
+  ];
+
+  Widget getName () {
+    return Tab(
+      child: Text(widget.name),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +89,15 @@ class HomePage extends StatelessWidget {
               }),
         ],
       ),
-      body: Center(
-        child: Text('Welcome $name'),
+      body: TabBarView(
+        controller: _tabController,
+        children: _tabList,
       ),
+      //Center(child: Text('Welcome ${widget.name}')),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationLoggedOut());
+          BlocProvider.of<AuthenticationBloc>(context)
+              .add(AuthenticationLoggedOut());
         },
         label: Text('Log Out'),
         icon: Icon(Icons.thumb_up),
@@ -61,12 +107,26 @@ class HomePage extends StatelessWidget {
           children: <Widget>[
             ListTile(
               title: Text('Item 1'),
-              onTap: (){
+              onTap: () {
                 Navigator.pop(context);
               },
             )
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (currentIndex) {
+          setState(() {
+            _currentIndex = currentIndex;
+          });
+
+          _tabController.animateTo(_currentIndex);
+        },
+        items: [
+          BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home)),
+          BottomNavigationBarItem(label: "Files", icon: Icon(Icons.folder)),
+          BottomNavigationBarItem(label: "Settings", icon: Icon(Icons.settings))
+        ],
       ),
     );
   }
