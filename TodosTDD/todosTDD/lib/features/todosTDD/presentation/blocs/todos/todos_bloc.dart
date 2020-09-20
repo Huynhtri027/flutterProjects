@@ -52,21 +52,30 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
 
   Stream<TodosState> _mapLoadTodosToState() async* {
     _todosSubscription?.cancel();
-    final failurOrTodos = _displayTodo.call(NoParams());
-    _todosSubscription =
-        failurOrTodos.listen((todos) => add(TodosUpdated(todos)));
+    TodosResult failurOrTodos = await _displayTodo.call(NoParams());
+    //List<TodoModel> todosList = failurOrTodos.todosModel.toList() as List<TodoModel>;
+    //Stream<List<TodoModel>> streamList = failurOrTodos.todosModel;
+    //  _todosSubscription =
+    //      failurOrTodos.todosModel.listen((todos) => add(TodosUpdated(todos : failurOrTodos.todosModel)));
+    //_todosSubscription = failurOrTodos...add((TodosUpdated(todos: todosList)));
+    yield TodosLoaded(
+      todos: failurOrTodos.todosModel,
+    );
+    
+   //_mapTodosUpdateToState();
+    
   }
 
   Stream<TodosState> _mapAddTodoToState(AddTodo event) async* {
-    _addNewTodo.call(Params(todo: event.todo));
+    _addNewTodo.call(TodosParams(todo: event.todo));
   }
 
   Stream<TodosState> _mapUpdateTodoToState(UpdateTodo event) async* {
-    _updateTodo.call(Params(todo: event.updatedTodo));
+    _updateTodo.call(TodosParams(todo: event.updatedTodo));
   }
 
   Stream<TodosState> _mapDeleteTodoToState(DeleteTodo event) async* {
-    _deleteTodo.call(Params(todo: event.todo));
+    _deleteTodo.call(TodosParams(todo: event.todo));
   }
 
   Stream<TodosState> _mapToggleAllToState() async* {
@@ -92,8 +101,9 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
   }
 
   Stream<TodosState> _mapTodosUpdateToState(TodosUpdated event) async* {
-    yield TodosLoaded(event.todos);
+    yield TodosLoaded(todos: event.todos);
   }
+
 
   @override
   Future<void> close() {

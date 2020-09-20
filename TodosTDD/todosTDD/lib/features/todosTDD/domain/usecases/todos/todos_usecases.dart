@@ -4,55 +4,85 @@ import 'package:todosTDD/core/usecases/usecase.dart';
 import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
 import 'package:todosTDD/features/todosTDD/domain/repositories/todos/todos_repository.dart';
 
-class AddNewTodoUC implements UseCase<void, Params> {
+import '../../../../../locator.dart';
+
+abstract class TodosUsecase implements BaseUseCase<TodosResult,NoParams> {}
+
+class AddNewTodoUC {
+
   final TodosRepository todosRepository;
 
   AddNewTodoUC(this.todosRepository);
 
-  @override
-  Future<void> call(Params params) async {
+  Future<void> call(TodosParams params) async {
     return await todosRepository.addNewTodo(params.todo);
   }
 }
 
-class DisplayTodoUC extends UseCaseStream<List<TodoModel>, NoParams> {    //And in case of List<TodoModel> we can pass ProductDetailsResults and can be defined below
-  final TodosRepository todosRepository;
+class DisplayTodoUC implements TodosUsecase{ 
+
+  TodosRepository todosRepository = sl();
 
   DisplayTodoUC(this.todosRepository);
 
   @override
-  Stream<List<TodoModel>> call(NoParams params) {
-    return todosRepository.todos();
+  Future<TodosResult> call(NoParams params) async{
+      return TodosResult(
+      todosModel: await todosRepository.todos(),
+      );
+
+   //And in case of List<TodoModel> we can pass ProductDetailsResults and can be defined below
+
+  // @override
+  // Stream<TodosResult> call(NoParams params) {
+  //   return todosRepository.todos();
+  // }
   }
+
 }
 
-class DeleteTodoUC extends UseCase<void, Params> {
+class DeleteTodoUC {
   final TodosRepository todosRepository;
 
   DeleteTodoUC(this.todosRepository);
 
-  @override
-  Future<void> call(Params params) {
+  Future<void> call(TodosParams params) {
     return todosRepository.deleteTodo(params.todo);
   }
 }
 
-class UpdateTodoUC extends UseCase<void, Params> {
+class UpdateTodoUC {
   final TodosRepository todosRepository;
 
   UpdateTodoUC(this.todosRepository);
 
-  @override
-  Future<void> call(Params params) {
+  Future<void> call(TodosParams params) {
     return todosRepository.updateTodo(params.todo);
   }
 }
 
-class Params extends Equatable {    //Here we can provide ProductDetailsParams here
+
+class TodosParams extends Equatable {    //Here we can provide ProductDetailsParams here
   final TodoModel todo;
 
-  Params({@required this.todo});
+  TodosParams({@required this.todo});
 
   @override
   List<Object> get props => [todo];
 }
+
+class TodosResult extends UseCaseResult {
+  final List<TodoModel> todosModel;
+
+  TodosResult({this.todosModel}) : super(null, false);
+
+  @override
+  // TODO: implement exception
+  Exception get exception => throw UnimplementedError();
+
+  @override
+  // TODO: implement result
+  bool get result => throw UnimplementedError();
+}
+
+class TodosNoParams {}

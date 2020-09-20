@@ -13,7 +13,7 @@ class TodosLoading extends TodosState {}
 class TodosLoaded extends TodosState {
   final List<TodoModel> todos;
 
-  TodosLoaded(this.todos);
+  TodosLoaded({this.todos});
 
   //const TodosLoaded([this.todos = const []]);
 

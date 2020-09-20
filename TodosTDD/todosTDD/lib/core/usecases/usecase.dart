@@ -1,8 +1,15 @@
 import 'package:equatable/equatable.dart';
 
-abstract class UseCase<Type, Params> {
-  Future<Type> call(Params params);
+abstract class BaseUseCase<Result, Params> {
+  Future<Result> call(Params params);
   
+}
+
+class UseCaseResult {
+  final Exception exception;
+  final bool result;
+
+  UseCaseResult(this.exception, this.result);
 }
 
 class NoParams extends Equatable {
@@ -10,6 +17,6 @@ class NoParams extends Equatable {
   List<Object> get props => [];
 }
 
-abstract class UseCaseStream<Type, Params> {
-  Stream<Type> call(Params params);
+abstract class UseCaseStream<Result, Params> {
+  Stream<Result> call(Params params);
 }

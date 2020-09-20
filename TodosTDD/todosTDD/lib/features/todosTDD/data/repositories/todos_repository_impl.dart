@@ -21,7 +21,7 @@ class TodosRepositoryImpl implements TodosRepository {
     }
   
     @override
-    Stream<List<TodoModel>> todos() {
+    Future<List<TodoModel>> todos() {
       return todosDataSource.todos();
     }
 

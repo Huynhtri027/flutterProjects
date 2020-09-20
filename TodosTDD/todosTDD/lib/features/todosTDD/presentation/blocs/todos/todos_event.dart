@@ -53,7 +53,7 @@ class ToggleAll extends TodosEvent {}
 class TodosUpdated extends TodosEvent {
   final List<TodoModel> todos;
 
-  const TodosUpdated(this.todos);
+  const TodosUpdated({this.todos});
 
   @override
   List<Object> get props => [todos];

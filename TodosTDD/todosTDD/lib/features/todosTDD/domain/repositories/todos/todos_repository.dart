@@ -12,7 +12,7 @@ abstract class TodosRepository {
 
   Future<void> deleteTodo(TodoModel todo);
 
-  Stream<List<TodoModel>> todos();
+  Future<List<TodoModel>> todos();
 
   Future<void> updateTodo(TodoModel todo);
 }
