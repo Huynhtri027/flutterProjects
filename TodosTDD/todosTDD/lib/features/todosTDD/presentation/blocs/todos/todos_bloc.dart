@@ -53,15 +53,16 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
   Stream<TodosState> _mapLoadTodosToState() async* {
     _todosSubscription?.cancel();
     TodosResult failurOrTodos = await _displayTodo.call(NoParams());
-    List<TodoModel> todosList = failurOrTodos.todosModel.toList();
-    _todosSubscription =
-        todosList.cast().listen((todos) => add(TodosUpdated(todos : failurOrTodos.todosModel)));
-    //_todosSubscription = failurOrTodos.todosModel.fol
+    //List<TodoModel> todosList = failurOrTodos.todosModel.toList() as List<TodoModel>;
+    //Stream<List<TodoModel>> streamList = failurOrTodos.todosModel;
+    //  _todosSubscription =
+    //      failurOrTodos.todosModel.listen((todos) => add(TodosUpdated(todos : failurOrTodos.todosModel)));
+    //_todosSubscription = failurOrTodos...add((TodosUpdated(todos: todosList)));
     yield TodosLoaded(
       todos: failurOrTodos.todosModel,
     );
     
-   // _mapTodosUpdateToState();
+   //_mapTodosUpdateToState();
     
   }
 
