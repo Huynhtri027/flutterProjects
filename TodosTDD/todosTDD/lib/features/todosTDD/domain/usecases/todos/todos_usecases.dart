@@ -7,6 +7,10 @@ import 'package:todosTDD/features/todosTDD/domain/repositories/todos/todos_repos
 import '../../../../../locator.dart';
 
 abstract class TodosUsecase implements BaseUseCase<TodosResult,NoParams> {}
+//Usecases and implementaion class contains same methods called up. And in Datasource we are writing the logic.
+//Here we have the impls class for each usecases.
+//In other project , we are having the use case with Rersult and params like this but 
+//its having impl of usecases but in same file and then its using directly the repo function or impl fucntions.
 
 class AddNewTodoUC {
 
