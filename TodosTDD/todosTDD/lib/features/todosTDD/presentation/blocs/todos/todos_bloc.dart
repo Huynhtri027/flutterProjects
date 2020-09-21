@@ -2,31 +2,29 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:todosTDD/core/usecases/usecase.dart';
 import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
-import 'package:todosTDD/features/todosTDD/domain/usecases/todos/todos_usecases.dart';
-
+import 'package:todosTDD/features/todosTDD/domain/usecases/todos/displayTodos_usecase.dart';
 import 'package:todosTDD/features/todosTDD/presentation/blocs/todos/todo_barrel.dart';
 
 class TodosBloc extends Bloc<TodosEvent, TodosState> {
   StreamSubscription
       _todosSubscription; //Only UseCases we are instatiating here.
-  DisplayTodoUC _displayTodo;
-  AddNewTodoUC _addNewTodo;
-  UpdateTodoUC _updateTodo;
-  DeleteTodoUC _deleteTodo;
+  DisplayTodosUsecase _displayTodoUsecase;
+  // AddNewTodoUC _addNewTodo;
+  // UpdateTodoUC _updateTodo;
+  // DeleteTodoUC _deleteTodo;
 
   TodosBloc({
-    @required DisplayTodoUC displayTodo,
-    @required AddNewTodoUC addNewTodo,
-    @required UpdateTodoUC updateTodo,
-    @required DeleteTodoUC deleteTodo,
+    @required DisplayTodosUsecase displayTodo,
+    // @required AddNewTodoUC addNewTodo,
+    // @required UpdateTodoUC updateTodo,
+    // @required DeleteTodoUC deleteTodo,
   })  : assert(displayTodo != null),
-        assert(addNewTodo != null),
-        _displayTodo = displayTodo,
-        _addNewTodo = addNewTodo,
-        _updateTodo = updateTodo,
-        _deleteTodo = deleteTodo,
+        //assert(addNewTodo != null),
+        _displayTodoUsecase = displayTodo,
+        // _addNewTodo = addNewTodo,
+        // _updateTodo = updateTodo,
+        // _deleteTodo = deleteTodo,
         super(TodosLoading());
 
   @override
@@ -52,14 +50,14 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
 
   Stream<TodosState> _mapLoadTodosToState() async* {
     _todosSubscription?.cancel();
-    TodosResult failurOrTodos = await _displayTodo.call(NoParams());
+    final failurOrTodos = await _displayTodoUsecase.call(TodosNoParams());
     //List<TodoModel> todosList = failurOrTodos.todosModel.toList() as List<TodoModel>;
     //Stream<List<TodoModel>> streamList = failurOrTodos.todosModel;
     //  _todosSubscription =
     //      failurOrTodos.todosModel.listen((todos) => add(TodosUpdated(todos : failurOrTodos.todosModel)));
     //_todosSubscription = failurOrTodos...add((TodosUpdated(todos: todosList)));
     yield TodosLoaded(
-      todos: failurOrTodos.todosModel,
+      todos: failurOrTodos.todos,
     );
     
    //_mapTodosUpdateToState();
@@ -67,15 +65,15 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
   }
 
   Stream<TodosState> _mapAddTodoToState(AddTodo event) async* {
-    _addNewTodo.call(TodosParams(todo: event.todo));
+    //_addNewTodo.call(TodosParams(todo: event.todo));
   }
 
   Stream<TodosState> _mapUpdateTodoToState(UpdateTodo event) async* {
-    _updateTodo.call(TodosParams(todo: event.updatedTodo));
+    //_updateTodo.call(TodosParams(todo: event.updatedTodo));
   }
 
   Stream<TodosState> _mapDeleteTodoToState(DeleteTodo event) async* {
-    _deleteTodo.call(TodosParams(todo: event.todo));
+    //_deleteTodo.call(TodosParams(todo: event.todo));
   }
 
   Stream<TodosState> _mapToggleAllToState() async* {
