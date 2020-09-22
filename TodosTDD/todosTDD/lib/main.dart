@@ -1,16 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todosTDD/features/todosTDD/presentation/blocs/todos/todo_barrel.dart';
-import 'package:todosTDD/locator.dart';
 
 import 'features/todosTDD/data/models/todos/todo.dart';
 import 'features/todosTDD/presentation/blocs/filtered_todos/filtered_todos_barrel.dart';
 import 'features/todosTDD/presentation/blocs/simple_bloc_delegate.dart';
 import 'features/todosTDD/presentation/blocs/stats/stats.dart';
 import 'features/todosTDD/presentation/blocs/tabs/tab.dart';
+import 'features/todosTDD/presentation/blocs/todos/todo_barrel.dart';
 import 'features/todosTDD/presentation/screens/add_edit_screen.dart';
 import 'features/todosTDD/presentation/screens/home_screen.dart';
+import 'locator.dart';
 import 'locator.dart' as di;
 
 void main() async {

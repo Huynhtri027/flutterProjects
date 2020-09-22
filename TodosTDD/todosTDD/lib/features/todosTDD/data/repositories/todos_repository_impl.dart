@@ -1,23 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
-import 'package:todosTDD/features/todosTDD/domain/entities/todos/todo_entity.dart';
-import 'package:todosTDD/features/todosTDD/domain/repositories/todos/todos_repository.dart';
+
+import '../../domain/entities/todos/todo_entity.dart';
+import '../../domain/repositories/todos/todos_repository.dart';
+import '../models/todos/todo.dart';
 
 class TodosRepositoryImpl implements TodosRepository {
-  //final TodosDataSource todosDataSource;
-
-  //odosRepositoryImpl();
-
   final todoCollection = Firestore.instance.collection('todos');
 
   @override
   Future<void> addNewTodo(TodoModel todo) async {
-    //return todosDataSource.addNewTodo(todo);
+    return todoCollection.add(todo.toEntity().toDocument());
   }
 
   @override
   Future<void> deleteTodo(TodoModel todo) {
-    //return todosDataSource.deleteTodo(todo);
+    return todoCollection.document(todo.id).delete();
   }
 
   @override
@@ -31,6 +28,8 @@ class TodosRepositoryImpl implements TodosRepository {
 
   @override
   Future<void> updateTodo(TodoModel todo) {
-    //return todosDataSource.updateTodo(todo);
+    return todoCollection
+        .document(todo.id)
+        .updateData(todo.toEntity().toDocument());
   }
 }

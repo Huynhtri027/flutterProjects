@@ -6,22 +6,22 @@ import '../../../../../locator.dart';
 import '../../../data/models/todos/todo.dart';
 import '../../repositories/todos/todos_repository.dart';
 
-abstract class AddTodoUsecase implements BaseUseCase<TodosResult, TodosParams> {
-}
+abstract class DeleteTodoUsecase
+    implements BaseUseCase<TodosResult, TodosDParams> {}
 
-class AddTodoUsecaseImpl implements AddTodoUsecase {
+class DeleteUsecaseImpl implements DeleteTodoUsecase {
   @override
-  Future<TodosResult> call(TodosParams params) async {
+  Future<TodosResult> call(TodosDParams params) async {
     TodosRepository todosRepository = sl();
-    todosRepository.addNewTodo(params.todo);
+    todosRepository.deleteTodo(params.todo);
     return TodosResult(result: true);
   }
 }
 
-class TodosParams extends Equatable {
+class TodosDParams extends Equatable {
   final TodoModel todo;
 
-  TodosParams({@required this.todo});
+  TodosDParams({@required this.todo});
 
   @override
   List<Object> get props => [todo];
@@ -31,12 +31,4 @@ class TodosResult extends UseCaseResult {
   final List<TodoModel> todosModel;
 
   TodosResult({this.todosModel, bool result}) : super(null, false);
-
-  @override
-  // TODO: implement exception
-  Exception get exception => throw UnimplementedError();
-
-  @override
-  // TODO: implement result
-  bool get result => throw UnimplementedError();
 }

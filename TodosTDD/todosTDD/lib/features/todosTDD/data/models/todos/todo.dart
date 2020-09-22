@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 import '../../../domain/entities/todos/todo_entity.dart';
 
 @immutable
-class TodoModel extends TodoEntity{
+class TodoModel extends TodoEntity {
   final bool complete;
   final String id;
   final String note;
@@ -11,8 +11,8 @@ class TodoModel extends TodoEntity{
 
   TodoModel(this.task, {this.complete = false, String note = '', String id})
       : this.note = note ?? '',
-        this.id = id, super('', '', '', false);
-
+        this.id = id,
+        super('', '', '', false);
 
   TodoModel copyWith({bool complete, String id, String note, String task}) {
     return TodoModel(
