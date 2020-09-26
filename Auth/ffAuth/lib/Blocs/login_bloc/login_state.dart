@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -7,6 +8,8 @@ class LoginState {
   final bool isSubmitting;
   final bool isSuccess;
   final bool isFailure;
+  final String exceptionMessage;
+  
 
   bool get isFormValid => isEmailValid && isPasswordValid;
 
@@ -16,6 +19,7 @@ class LoginState {
     @required this.isSubmitting,
     @required this.isSuccess,
     @required this.isFailure,
+    @required this.exceptionMessage, 
   });
 
   factory LoginState.initial() {
@@ -24,7 +28,8 @@ class LoginState {
       isPasswordValid: true,
       isSubmitting: false,
       isSuccess: false,
-      isFailure: false,
+      isFailure: false, 
+      exceptionMessage: null,
     );
   }
 
@@ -34,17 +39,19 @@ class LoginState {
       isPasswordValid: true,
       isSubmitting: true,
       isSuccess: false,
-      isFailure: false,
+      isFailure: false, 
+      exceptionMessage: null,
     );
   }
 
-  factory LoginState.failure() {
+  factory LoginState.failure(String status) {
     return LoginState(
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: false,
       isSuccess: false,
-      isFailure: true,
+      isFailure: true, 
+      exceptionMessage: status.toString(),
     );
   }
 
@@ -54,7 +61,8 @@ class LoginState {
       isPasswordValid: true,
       isSubmitting: false,
       isSuccess: true,
-      isFailure: false,
+      isFailure: false, 
+      exceptionMessage: null,
     );
   }
 
@@ -84,7 +92,8 @@ class LoginState {
       isPasswordValid: isPasswordValid ?? this.isPasswordValid,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       isSuccess: isSuccess ?? this.isSuccess,
-      isFailure: isFailure ?? this.isFailure,
+      isFailure: isFailure ?? this.isFailure, 
+      exceptionMessage: null,
     );
   }
 

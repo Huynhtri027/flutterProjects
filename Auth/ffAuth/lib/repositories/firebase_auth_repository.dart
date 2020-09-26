@@ -26,6 +26,40 @@ class FirebaseAuthRepository {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
+  // Future<UserCredential> createWithEmailPassword(
+  //     String email, String password) async {
+  //   try {
+  //     return await FirebaseAuth.instance
+  //         .createUserWithEmailAndPassword(email: email, password: password);
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'user-not-found') {
+  //       print('No user found for that email.');
+  //     } else if (e.code == 'wrong-password') {
+  //       print('Wrong password provided for that user.');
+  //     }
+  //   }
+  // }
+
+  Future<String> createWithEmailPassword(
+      String email, String password,) async {
+    
+    try {
+      final UserCredential _userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+        print(_userCredential);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      } else if(e.message != null) {
+        print(e);
+        print(e.message);
+        return e.message.toString();
+      }
+    }
+  }
+
   Future<bool> isSignedIn() async {
     final currentUser = _firebaseAuth.currentUser;
     return currentUser != null;
@@ -35,8 +69,11 @@ class FirebaseAuthRepository {
     return _firebaseAuth.currentUser.displayName;
   }
 
+  Future<String> getEmail() async {
+    return _firebaseAuth.currentUser.email;
+  }
+
   Future<void> signOut() async {
     return _firebaseAuth.signOut();
-    
   }
 }

@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   final FirebaseAuthRepository firebaseAuthRepository;
-  final String displayName;
+  final String displayName,email;
 
-  const HomeScreen({Key key, this.displayName, this.firebaseAuthRepository})
+  const HomeScreen({Key key, this.displayName,this.email, this.firebaseAuthRepository})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,18 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text(
-          displayName,
-          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              displayName?? 'No name',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              email?? 'No email',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ),
     );

@@ -33,15 +33,16 @@ class AuthenticationBloc
   Stream<AuthenticationBlocState> _mapAuthenticationStartedToState() async* {
     final isSignedIn = await _firebaseAuthRepository.isSignedIn();
     if (isSignedIn) {
-      final name = await _firebaseAuthRepository.getUser();
-      yield AuthenticationSuccess(name);
+      //final name = await _firebaseAuthRepository.getUser();
+      //final email = await _firebaseAuthRepository.getEmail();
+      yield AuthenticationSuccess(displayName: await _firebaseAuthRepository.getUser(), email: await _firebaseAuthRepository.getEmail());
     } else {
       yield AuthenticationFailure();
     }
   }
 
   Stream<AuthenticationBlocState> _mapAuthenticationLoggedInToState() async* {
-    yield AuthenticationSuccess(await _firebaseAuthRepository.getUser());
+    yield AuthenticationSuccess(displayName: await _firebaseAuthRepository.getUser(), email: await _firebaseAuthRepository.getEmail());
   }
 
   Stream<AuthenticationBlocState> _mapAuthenticationLoggedOutToState() async* {

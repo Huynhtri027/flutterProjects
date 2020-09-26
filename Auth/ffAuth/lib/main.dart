@@ -45,7 +45,8 @@ class MyApp extends StatelessWidget {
                   if(snapshot.connectionState == ConnectionState.active) {
                   return HomeScreen(
                       firebaseAuthRepository: _firebaseAuthRepository,
-                      displayName: state.displayName);
+                      displayName: state.displayName,
+                      email: state.email);
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(

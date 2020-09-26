@@ -14,11 +14,12 @@ class AuthenticationBlocInitial extends AuthenticationBlocState {
 
 class AuthenticationSuccess extends AuthenticationBlocState {
   final String displayName;
+  final String email;
 
-  const AuthenticationSuccess(this.displayName);
+  const AuthenticationSuccess({this.displayName, this.email});
 
   @override
-  List<Object> get props => [displayName];
+  List<Object> get props => [displayName, email];
 
   @override
   String toString() => 'Authenticated { displayName: $displayName }';
