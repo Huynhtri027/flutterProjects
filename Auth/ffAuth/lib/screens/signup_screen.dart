@@ -4,7 +4,6 @@ import 'package:ffAuth/Blocs/login_bloc/login_event.dart';
 import 'package:ffAuth/Blocs/login_bloc/login_state.dart';
 import 'package:ffAuth/repositories/firebase_auth_repository.dart';
 import 'package:ffAuth/screens/signin_credential_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -41,8 +41,7 @@ class _SignInCredentialState extends State<SignInCredential> {
 
   String email;
   String password;
-  String _method;
-  FirebaseAuthRepository _firebaseAuthRepository;
+  //FirebaseAuthRepository _firebaseAuthRepository;
 
   void validation() async {
     print(email);
