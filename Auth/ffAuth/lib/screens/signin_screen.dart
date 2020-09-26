@@ -64,7 +64,13 @@ class SignIn extends StatelessWidget {
           if (state.isSuccess) {
             BlocProvider.of<AuthenticationBloc>(context)
                 .add(AuthenticationLoggedIn());
-            Navigator.pop(context);
+                //Navigator.popUntil(context, (route) => route.isFirst);
+                // Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => SignInScreen(
+                //                 firebaseAuthRepository:
+                //                     firebaseAuthRepository)));
           }
         },
         child: Container(

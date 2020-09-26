@@ -25,7 +25,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is LoginWithGooglePressed) {
       yield* _mapLoginWithGooglePressedToState();
     } else if (event is LoginWithEmailPassword) {
-      yield* _mapLoginWithEmailPassword(event.email,event.password);
+      yield* _mapLoginWithEmailPasswordToState(event.name,event.email,event.password);
+    } else if (event is SignInWithEmailPassword) {
+      yield* _mapSignInWithEmailPasswordToState(event.email,event.password);
     }
   }
 
@@ -38,11 +40,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Stream<LoginState> _mapLoginWithEmailPassword(String email, String password) async*{
+  Stream<LoginState> _mapLoginWithEmailPasswordToState(String name,String email, String password) async*{
     
   try {
     print(email);
-    status = await _firebaseAuthRepository.createWithEmailPassword(email, password);
+    status = await _firebaseAuthRepository.createWithEmailPassword(name,email, password);
+    print(status);
+    if(status == null) {
+      yield LoginState.success();
+    } else {
+      yield LoginState.failure(status);     
+    }
+  } catch (_) {
+    yield LoginState.failure(status);
+  }
+}
+
+Stream<LoginState> _mapSignInWithEmailPasswordToState(String email, String password) async*{
+    
+  try {
+    print(email);
+    status = await _firebaseAuthRepository.signInWithEmailPassword(email, password);
     print(status);
     if(status == null) {
       yield LoginState.success();

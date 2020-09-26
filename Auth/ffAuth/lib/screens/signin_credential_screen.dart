@@ -3,15 +3,13 @@ import 'package:ffAuth/Blocs/login_bloc/login_bloc.dart';
 import 'package:ffAuth/Blocs/login_bloc/login_event.dart';
 import 'package:ffAuth/Blocs/login_bloc/login_state.dart';
 import 'package:ffAuth/repositories/firebase_auth_repository.dart';
-import 'package:ffAuth/screens/signin_credential_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignUpScreen extends StatelessWidget {
-  final FirebaseAuthRepository firebaseAuthRepository;
+class SignInCredentialScreen extends StatelessWidget {
+ final FirebaseAuthRepository firebaseAuthRepository;
 
-  const SignUpScreen({Key key, this.firebaseAuthRepository}) : super(key: key);
+  const SignInCredentialScreen({Key key, this.firebaseAuthRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,43 +18,38 @@ class SignUpScreen extends StatelessWidget {
       body: BlocProvider<LoginBloc>(
         create: (context) =>
             LoginBloc(firebaseAuthRepository: firebaseAuthRepository),
-        child: SignUp(firebaseAuthRepository: firebaseAuthRepository),
+        child: SignInCredential(firebaseAuthRepository: firebaseAuthRepository),
       ),
     );
   }
 }
 
-class SignUp extends StatefulWidget {
+class SignInCredential extends StatefulWidget {
   final FirebaseAuthRepository firebaseAuthRepository;
 
-  SignUp({
-    Key key,
-    this.firebaseAuthRepository,
-  }) : super(key: key);
+  const SignInCredential({Key key, this.firebaseAuthRepository}) : super(key: key);
 
   @override
-  _SignUpState createState() => _SignUpState();
+  _SignInCredentialState createState() => _SignInCredentialState();
 }
-
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 final String p =
     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
-class _SignUpState extends State<SignUp> {
+class _SignInCredentialState extends State<SignInCredential> {
+
   String email;
   String password;
-  String name;
-  //FirebaseAuthRepository _firebaseAuthRepository;
-  // FocusNode _emailFocus;
-  // FocusNode _passwordFocus = FocusNode();
+  String _method;
+  FirebaseAuthRepository _firebaseAuthRepository;
+
   void validation() async {
     print(email);
     final FormState _form = _formKey.currentState;
-    if (!_form.validate() && email != null && password != null && name != null) {
-      //CircularProgressIndicator();
+    if (!_form.validate() && email != null && password != null) {
       BlocProvider.of<LoginBloc>(context)
-          .add(LoginWithEmailPassword(name: name,email: email, password: password));
+          .add(SignInWithEmailPassword(email: email, password: password));
     } else {
       print("No");
     }
@@ -64,6 +57,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
+    
     RegExp regExp = new RegExp(p);
     //FocusNode _focusNode;
 
@@ -103,25 +97,10 @@ class _SignUpState extends State<SignUp> {
               );
           }
           if (state.isSuccess) {
-            
             BlocProvider.of<AuthenticationBloc>(context)
                 .add(AuthenticationLoggedIn());
-                Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Account registered'),
-                      CircularProgressIndicator(),
-                    ],
-                  ),
-                ),
-              );
-            // Navigator.push(context, MaterialPageRoute(builder: (context) => SignInCredentialScreen(
-            //                     firebaseAuthRepository:
-            //                         widget.firebaseAuthRepository)));
+            //Navigator.pop(context);
+            Navigator.popUntil(context, (route) => route.isFirst);
           }
         },
         child: SafeArea(
@@ -136,44 +115,11 @@ class _SignUpState extends State<SignUp> {
                 child: Container(
                     child: Column(
                   children: [
-                    
                     SizedBox(
                       height: 50.0,
                     ),
                     TextFormField(
                       autofocus: true,
-                      //focusNode: _emailFocus,
-                      textInputAction: TextInputAction.next,
-                      validator: (value) {
-                        if (value == "") {
-                          return "Please provide Name";
-                        } 
-                        return "";
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          name = value;
-                        });
-
-                        //_focusNode.unfocus();
-
-                        //_emailFocus.unfocus();
-                        //FocusScope.of(context).requestFocus(_passwordFocus);
-                      },
-                      style: TextStyle(fontSize: 22.0),
-                      decoration: InputDecoration(
-                          hintText: 'Type Name',
-                          fillColor: Colors.white,
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black)),
-                          contentPadding: EdgeInsets.all(5.0),
-                          border: OutlineInputBorder()),
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    TextFormField(
-                      //autofocus: true,
                       //focusNode: _emailFocus,
                       textInputAction: TextInputAction.next,
                       validator: (value) {
@@ -204,7 +150,7 @@ class _SignUpState extends State<SignUp> {
                           border: OutlineInputBorder()),
                     ),
                     SizedBox(
-                      height: 20.0,
+                      height: 50.0,
                     ),
                     TextFormField(
                         //focusNode: _passwordFocus,
@@ -234,27 +180,16 @@ class _SignUpState extends State<SignUp> {
                             contentPadding: EdgeInsets.all(5.0),
                             border: OutlineInputBorder())),
                     SizedBox(
-                      height: 20.0,
+                      height: 40.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        FlatButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SignInCredentialScreen(
-                                firebaseAuthRepository:
-                                    widget.firebaseAuthRepository)));
-                            // _method = 'signIn';
-                            // validation(_method);
-                          },
-                          child: Text('Already have an account'),
-                          //color: Colors.black,
-                        ),
                         RaisedButton(
                           onPressed: () {
                             validation();
                           },
-                          child: Text('Register'),
+                          child: Text('Sign in'),
                           //color: Colors.black,
                         ),
                       ],
