@@ -55,7 +55,6 @@ class SignIn extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Logging In...'),
-                      CircularProgressIndicator(),
                     ],
                   ),
                 ),

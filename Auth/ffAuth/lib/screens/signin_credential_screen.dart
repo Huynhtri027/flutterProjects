@@ -89,7 +89,6 @@ class _SignInCredentialState extends State<SignInCredential> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Logging In...'),
-                      CircularProgressIndicator(),
                     ],
                   ),
                 ),
@@ -153,6 +152,7 @@ class _SignInCredentialState extends State<SignInCredential> {
                     ),
                     TextFormField(
                         //focusNode: _passwordFocus,
+                        obscureText: true,
                         validator: (value) {
                           if (value == "") {
                             return "Please provide Password";
