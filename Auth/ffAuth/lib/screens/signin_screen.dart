@@ -75,13 +75,24 @@ class SignIn extends StatelessWidget {
             child: Center(
               child: Container(
                 width: 300.0,
-                height: 50.0,
-                child: SignInButton(
-                  Buttons.Google,
-                  onPressed: () {
-                    BlocProvider.of<LoginBloc>(context)
-                        .add(LoginWithGooglePressed());
-                  },
+                height: 300.0,
+                child: Column(
+                  children: [
+                    SignInButton(
+                      Buttons.Google,
+                      onPressed: () {
+                        BlocProvider.of<LoginBloc>(context)
+                            .add(LoginWithGooglePressed());
+                      },
+                    ),
+                    SizedBox(height: 10.0),
+                    RaisedButton(
+                      child: Text('Sign in Anonymously'),
+                      onPressed: () {
+                        BlocProvider.of<LoginBloc>(context)
+                            .add(LoginAnonymous());
+                    })
+                  ],
                 ),
               ),
             )));

@@ -40,14 +40,16 @@ class FirebaseAuthRepository {
   //   }
   // }
 
-  Future<String> createWithEmailPassword(String name,
-      String email, String password,) async {
-    
+  Future<String> createWithEmailPassword(
+    String name,
+    String email,
+    String password,
+  ) async {
     try {
       final UserCredential _userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-        _userCredential.user.updateProfile(displayName: name);
-        print(_userCredential.user.displayName);
+      _userCredential.user.updateProfile(displayName: name);
+      print(_userCredential.user.displayName);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -55,7 +57,7 @@ class FirebaseAuthRepository {
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
         return e.code.toString();
-      } else if(e.message != null) {
+      } else if (e.message != null) {
         print(e);
         print(e.message);
         return e.message.toString();
@@ -64,12 +66,13 @@ class FirebaseAuthRepository {
   }
 
   Future<String> signInWithEmailPassword(
-      String email, String password,) async {
-    
+    String email,
+    String password,
+  ) async {
     try {
       final UserCredential _userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-        print(_userCredential);
+      print(_userCredential);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -77,7 +80,46 @@ class FirebaseAuthRepository {
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
         return e.code.toString();
-      } else if(e.message != null) {
+      } else if (e.message != null) {
+        print(e);
+        print(e.message);
+        return e.message.toString();
+      }
+    }
+  }
+
+  Future<String> forgotPwdSubmit(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+        return e.code.toString();
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+        return e.code.toString();
+      } else if (e.message != null) {
+        print(e);
+        print(e.message);
+        return e.message.toString();
+      }
+    }
+  }
+
+  Future<String> signInAnonymously() async {
+    try {
+      final UserCredential _userCredential = await FirebaseAuth.instance
+          .signInAnonymously();
+      //_userCredential.user.updateProfile(displayName: name);
+      print(_userCredential.user.displayName);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+        return e.code.toString();
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+        return e.code.toString();
+      } else if (e.message != null) {
         print(e);
         print(e.message);
         return e.message.toString();

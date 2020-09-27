@@ -1,16 +1,15 @@
-import 'package:ffAuth/Blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:ffAuth/Blocs/login_bloc/login_bloc.dart';
 import 'package:ffAuth/Blocs/login_bloc/login_event.dart';
 import 'package:ffAuth/Blocs/login_bloc/login_state.dart';
 import 'package:ffAuth/repositories/firebase_auth_repository.dart';
-import 'package:ffAuth/screens/forgotpwd_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignInCredentialScreen extends StatelessWidget {
- final FirebaseAuthRepository firebaseAuthRepository;
+class ForgotPwdScreen extends StatelessWidget {
+  final FirebaseAuthRepository firebaseAuthRepository;
 
-  const SignInCredentialScreen({Key key, this.firebaseAuthRepository}) : super(key: key);
+  const ForgotPwdScreen({Key key, this.firebaseAuthRepository})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,46 +18,47 @@ class SignInCredentialScreen extends StatelessWidget {
       body: BlocProvider<LoginBloc>(
         create: (context) =>
             LoginBloc(firebaseAuthRepository: firebaseAuthRepository),
-        child: SignInCredential(firebaseAuthRepository: firebaseAuthRepository),
+        child: ForgotPwd(firebaseAuthRepository: firebaseAuthRepository),
       ),
     );
   }
 }
 
-class SignInCredential extends StatefulWidget {
+class ForgotPwd extends StatefulWidget {
   final FirebaseAuthRepository firebaseAuthRepository;
 
-  const SignInCredential({Key key, this.firebaseAuthRepository}) : super(key: key);
+  const ForgotPwd({Key key, this.firebaseAuthRepository}) : super(key: key);
 
   @override
-  _SignInCredentialState createState() => _SignInCredentialState();
+  _ForgotPwdState createState() => _ForgotPwdState();
 }
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 final String p =
     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
-class _SignInCredentialState extends State<SignInCredential> {
+String email;
 
-  String email;
-  String password;
+class _ForgotPwdState extends State<ForgotPwd> {
 
   void validation() async {
-    print(email);
-    final FormState _form = _formKey.currentState;
-    if (!_form.validate() && email != null && password != null) {
-      BlocProvider.of<LoginBloc>(context)
-          .add(SignInWithEmailPassword(email: email, password: password));
-    } else {
-      print("No");
+      print(email);
+      final FormState _form = _formKey.currentState;
+      if (!_form.validate() && email != null) {
+        //return "Yes";
+        //CircularProgressIndicator();
+        BlocProvider.of<LoginBloc>(context).add(ForgotPwdSubmit(email: email));
+      } else {
+        print("No");
+        //return null;
+      }
     }
-  }
 
   @override
   Widget build(BuildContext context) {
-    
     RegExp regExp = new RegExp(p);
-    //FocusNode _focusNode;
+
+    
 
     return BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
@@ -88,18 +88,39 @@ class _SignInCredentialState extends State<SignInCredential> {
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Logging In...'),
+                      Text('Processing In...'),
                       CircularProgressIndicator(),
                     ],
                   ),
                 ),
               );
           }
+          
           if (state.isSuccess) {
-            BlocProvider.of<AuthenticationBloc>(context)
-                .add(AuthenticationLoggedIn());
+            // showDialog(
+            //     context: context,
+            //     //builder: ,
+            //     child: Dialog(
+            //         child: Column(
+            //       children: [
+            //         Text('Please check your email'),
+            //         Text('A password reset link has been sent to $email'),
+            //       ],
+            //     )));
+                Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(child: Text('A password reset link has been sent to $email')),
+                    ],
+                  ),
+                ),
+              );
+
             //Navigator.pop(context);
-            Navigator.popUntil(context, (route) => route.isFirst);
           }
         },
         child: SafeArea(
@@ -115,10 +136,10 @@ class _SignInCredentialState extends State<SignInCredential> {
                     child: Column(
                   children: [
                     SizedBox(
-                      height: 50.0,
+                      height: 20.0,
                     ),
                     TextFormField(
-                      autofocus: true,
+                      //autofocus: true,
                       //focusNode: _emailFocus,
                       textInputAction: TextInputAction.next,
                       validator: (value) {
@@ -133,11 +154,6 @@ class _SignInCredentialState extends State<SignInCredential> {
                         setState(() {
                           email = value;
                         });
-
-                        //_focusNode.unfocus();
-
-                        //_emailFocus.unfocus();
-                        //FocusScope.of(context).requestFocus(_passwordFocus);
                       },
                       style: TextStyle(fontSize: 22.0),
                       decoration: InputDecoration(
@@ -149,57 +165,20 @@ class _SignInCredentialState extends State<SignInCredential> {
                           border: OutlineInputBorder()),
                     ),
                     SizedBox(
-                      height: 50.0,
-                    ),
-                    TextFormField(
-                        //focusNode: _passwordFocus,
-                        validator: (value) {
-                          if (value == "") {
-                            return "Please provide Password";
-                          } else if (value.length < 6) {
-                            return "Password is too short";
-                          }
-                          return "";
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            password = value;
-                          });
-
-                          //   FocusScope.of(context).addListener(() {
-                          //   validation();
-                          // });
-                        },
-                        style: TextStyle(fontSize: 22.0),
-                        decoration: InputDecoration(
-                            hintText: 'Type Password',
-                            fillColor: Colors.white,
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black)),
-                            contentPadding: EdgeInsets.all(5.0),
-                            border: OutlineInputBorder())),
-                    SizedBox(
-                      height: 40.0,
+                      height: 20.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        FlatButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPwdScreen(
-                                firebaseAuthRepository:
-                                    widget.firebaseAuthRepository)));
-                            // _method = 'signIn';
-                            // validation(_method);
-                          },
-                          child: Text('Forgot password ?'),
-                          //color: Colors.black,
-                        ),
                         RaisedButton(
                           onPressed: () {
                             validation();
+                            // if (validation() != null) {
+                            //   BlocProvider.of<LoginBloc>(context)
+                            //       .add(ForgotPwdSubmit(email: email));
+                            // }
                           },
-                          child: Text('Sign in'),
+                          child: Text('Submit'),
                           //color: Colors.black,
                         ),
                       ],

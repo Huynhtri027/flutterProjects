@@ -29,43 +29,43 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: StreamBuilder<String>(
-          stream: _firebaseAuthRepository.onAuthStateChanged,
-          builder: (context, snapshot) {
-            return BlocBuilder<AuthenticationBloc, AuthenticationBlocState>(
-              builder: (context, state) {
-                if (state is AuthenticationBlocInitial) {
-                  return CircularProgressIndicator();
-                } else if (state is AuthenticationSuccess) {
-                  if(snapshot.connectionState == ConnectionState.active) {
-                  return HomeScreen(
-                      firebaseAuthRepository: _firebaseAuthRepository,
-                      displayName: state.displayName,
-                      email: state.email);
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => HomeScreen(
-                  //             firebaseAuthRepository: _firebaseAuthRepository,
-                  //             displayName: state.displayName)));
+            stream: _firebaseAuthRepository.onAuthStateChanged,
+            builder: (context, snapshot) {
+              return BlocBuilder<AuthenticationBloc, AuthenticationBlocState>(
+                builder: (context, state) {
+                  if (state is AuthenticationBlocInitial) {
+                    return CircularProgressIndicator();
+                  } else if (state is AuthenticationSuccess) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      return HomeScreen(
+                          firebaseAuthRepository: _firebaseAuthRepository,
+                          displayName: state.displayName,
+                          email: state.email);
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => HomeScreen(
+                      //             firebaseAuthRepository: _firebaseAuthRepository,
+                      //             displayName: state.displayName)));
+                    }
+                  } else if (state is AuthenticationFailure) {
+                    // return Dialog(
+                    //   child: Text('Authentication failure'),
+                    //   shape: RoundedRectangleBorder(),
+                    // );
+                    return MainScreen(
+                        firebaseAuthRepository: _firebaseAuthRepository);
                   }
-                } else if (state is AuthenticationFailure) {
-                  // return Dialog(
-                  //   child: Text('Authentication failure'),
-                  //   shape: RoundedRectangleBorder(),
-                  // );
-                  return MainScreen(
-                      firebaseAuthRepository: _firebaseAuthRepository);
-                }
-                return CircularProgressIndicator();
-              },
-            );
-          }
-        ));
+                  return CircularProgressIndicator();
+                },
+              );
+            }));
   }
 }
