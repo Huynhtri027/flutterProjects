@@ -3,12 +3,14 @@ import 'package:basic_app/repositories/firebase_auth_repository.dart';
 import 'package:basic_app/screens/Home.dart';
 import 'package:basic_app/screens/Login.dart';
 import 'package:bloc/bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/simple_bloc_delegate.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final FirebaseAuthRepository firebaseAuthRepository = FirebaseAuthRepository();
   runApp(
