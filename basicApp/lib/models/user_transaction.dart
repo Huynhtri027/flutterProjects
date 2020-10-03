@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class UserTransaction {
   final String transactionMonth;
-  final double transactionCount;
+  final int transactionCount;
 
   UserTransaction({
     @required this.transactionMonth,

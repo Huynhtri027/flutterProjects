@@ -10,10 +10,26 @@ class UsersList extends StatelessWidget {
       return GestureDetector(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ChartScreen(userId: doc.documentID)));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChartScreen(userId: doc.documentID)));
         },
-        child: ListTile(
-          title: Text(doc["name"]),
+        child: Container(
+          height: 70.0,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.cyan),
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+            child: ListTile(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+              title: Text(doc["name"]),
+              leading: Image.network(
+                doc["imgUrl"].toString(),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
         ),
       );
     }).toList();
