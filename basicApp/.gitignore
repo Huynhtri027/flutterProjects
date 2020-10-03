@@ -1,3 +1,7 @@
+## Ignoring andorid,ios and build folders
+build/*
+test/*
+
 # Miscellaneous
 *.class
 *.lock
