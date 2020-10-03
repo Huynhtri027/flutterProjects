@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class UsersList extends StatelessWidget {
   List<Widget> makeListWidget(BuildContext context, AsyncSnapshot snapshot) {
     return snapshot.data.documents.map<Widget>((doc) {
-      print(doc.documentID);
+      //print(doc.documentID);
       return GestureDetector(
         onTap: () {
           Navigator.push(
