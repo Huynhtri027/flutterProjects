@@ -4,15 +4,15 @@
 
 import 'dart:async';
 
-import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
+import 'package:todosTDD/features/todosTDD/domain/entities/todos/todo_entity.dart';
 
 
 abstract class TodosRepository {
-  Future<void> addNewTodo(TodoModel todo);
+  Future<void> addNewTodo(TodoEntity todo);
 
-  Future<void> deleteTodo(TodoModel todo);
+  Future<void> deleteTodo(TodoEntity todo);
 
-  Future<List<TodoModel>> todos();
+  Stream<List<TodoEntity>> todos();
 
-  Future<void> updateTodo(TodoModel todo);
+  Future<void> updateTodo(TodoEntity todo);
 }

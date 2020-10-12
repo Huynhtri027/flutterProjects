@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
+import 'package:todosTDD/features/todosTDD/domain/entities/todos/todo_entity.dart';
 
 abstract class TodosState extends Equatable {
   const TodosState();

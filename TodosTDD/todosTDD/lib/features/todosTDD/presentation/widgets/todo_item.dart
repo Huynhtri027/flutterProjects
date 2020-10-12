@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
 
-class TodoItem extends StatelessWidget {
+class TodoItem extends StatefulWidget {
   final DismissDirectionCallback onDismissed;
   final GestureTapCallback onTap;
   final ValueChanged<bool> onCheckboxChanged;
@@ -17,29 +17,34 @@ class TodoItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _TodoItemState createState() => _TodoItemState();
+}
+
+class _TodoItemState extends State<TodoItem> {
+  @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key('__todo_item_${todo.id}'),
-      onDismissed: onDismissed,
+      key: Key('__todo_item_${widget.todo.id}'),
+      onDismissed: widget.onDismissed,
       child: ListTile(
-        onTap: onTap,
+        onTap: widget.onTap,
         leading: Checkbox(
-          value: todo.complete,
-          onChanged: onCheckboxChanged,
+          value: widget.todo.complete,
+          onChanged: widget.onCheckboxChanged,
         ),
         title: Hero(
-          tag: '${todo.id}__heroTag',
+          tag: '${widget.todo.id}__heroTag',
           child: Container(
             width: MediaQuery.of(context).size.width,
             child: Text(
-              todo.task,
+              widget.todo.task,
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
         ),
-        subtitle: todo.note.isNotEmpty
+        subtitle: widget.todo.note.isNotEmpty
             ? Text(
-                todo.note,
+                widget.todo.note,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.subtitle1,

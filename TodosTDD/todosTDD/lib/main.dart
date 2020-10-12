@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
             return AddEditScreen(
               onSave: (task, note) {
                 BlocProvider.of<TodosBloc>(context).add(
-                  AddTodo(TodoModel(task, note: note)),
+                  AddTodo(TodoModel(task: task, note: note)),
                 );
               },
               isEditing: false,

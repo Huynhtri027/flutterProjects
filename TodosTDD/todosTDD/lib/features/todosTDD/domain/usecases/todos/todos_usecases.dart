@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:todosTDD/core/usecases/usecase.dart';
 import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
+import 'package:todosTDD/features/todosTDD/domain/entities/todos/todo_entity.dart';
 import 'package:todosTDD/features/todosTDD/domain/repositories/todos/todos_repository.dart';
 
 import '../../../../../locator.dart';
@@ -23,17 +24,23 @@ class AddNewTodoUC {
   }
 }
 
-class DisplayTodoUC implements TodosUsecase{ 
+class DisplayTodoUC extends TodosResult{ 
 
   TodosRepository todosRepository = sl();
 
   DisplayTodoUC(this.todosRepository);
 
-  @override
-  Future<TodosResult> call(NoParams params) async{
-      return TodosResult(
-      todosModel: await todosRepository.todos(),
-      );
+  Stream<List<TodoEntity>> call(TodosNoParams todosNoParams) {
+    return todosRepository.todos();
+  }
+
+  // @override
+  // Future<TodosResult> call(NoParams params) async{
+  //     return TodosResult(
+  //     odos: todosRepository.todos(),
+  //     );
+
+  
 
    //And in case of List<TodoModel> we can pass ProductDetailsResults and can be defined below
 
@@ -43,7 +50,6 @@ class DisplayTodoUC implements TodosUsecase{
   // }
   }
 
-}
 
 class DeleteTodoUC {
   final TodosRepository todosRepository;
@@ -76,9 +82,9 @@ class TodosParams extends Equatable {    //Here we can provide ProductDetailsPar
 }
 
 class TodosResult extends UseCaseResult {
-  final List<TodoModel> todosModel;
+  final Stream<List<TodoEntity>> todos;
 
-  TodosResult({this.todosModel}) : super(null, false);
+  TodosResult({this.todos}) : super(null, false);
 
   @override
   // TODO: implement exception

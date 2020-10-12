@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:todosTDD/core/usecases/usecase.dart';
 import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
+import 'package:todosTDD/features/todosTDD/domain/repositories/todos/todos_repository.dart';
 import 'package:todosTDD/features/todosTDD/domain/usecases/todos/todos_usecases.dart';
 
 import 'package:todosTDD/features/todosTDD/presentation/blocs/todos/todo_barrel.dart';
@@ -15,6 +16,8 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
   AddNewTodoUC _addNewTodo;
   UpdateTodoUC _updateTodo;
   DeleteTodoUC _deleteTodo;
+
+  TodosRepository todosRepository;
 
   TodosBloc({
     @required DisplayTodoUC displayTodo,
@@ -52,15 +55,17 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
 
   Stream<TodosState> _mapLoadTodosToState() async* {
     _todosSubscription?.cancel();
-    TodosResult failurOrTodos = await _displayTodo.call(NoParams());
+    final failurOrTodos = _displayTodo.call(TodosNoParams());
+    //final failurOrTodos = todosRepository.todos();
     //List<TodoModel> todosList = failurOrTodos.todosModel.toList() as List<TodoModel>;
     //Stream<List<TodoModel>> streamList = failurOrTodos.todosModel;
-    //  _todosSubscription =
-    //      failurOrTodos.todosModel.listen((todos) => add(TodosUpdated(todos : failurOrTodos.todosModel)));
+      _todosSubscription =
+          //failurOrTodos..todosModel.listen((todos) => add(TodosUpdated(todos : failurOrTodos.todosModel)));
+          failurOrTodos.listen((todos) => add(TodosUpdated(todos: todos)));
     //_todosSubscription = failurOrTodos...add((TodosUpdated(todos: todosList)));
-    yield TodosLoaded(
-      todos: failurOrTodos.todosModel,
-    );
+    // yield TodosLoaded(
+    //   odos: failurOrTodos.,
+    // );
     
    //_mapTodosUpdateToState();
     

@@ -1,5 +1,6 @@
 import 'package:basic_app/bloc/authentication_bloc/authentication_bloc.dart';
 import 'package:basic_app/repositories/firebase_auth_repository.dart';
+import 'package:basic_app/widgets/user_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,8 +54,8 @@ class _HomePageState extends State<HomePage>
 
   List<Widget> _tabList = [
     Container(
-      color: Colors.teal,
-      child: Center(child: Text('data')),
+      color: Colors.white,
+      child: UsersList(),
     ),
     Container(
       color: Colors.red,
