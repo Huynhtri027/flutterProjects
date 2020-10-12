@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:todosTDD/features/todosTDD/data/models/todos/todo.dart';
+import 'package:todosTDD/features/todosTDD/domain/entities/todos/todo_entity.dart';
 
 abstract class TodosEvent extends Equatable {
   const TodosEvent();
@@ -11,7 +12,7 @@ abstract class TodosEvent extends Equatable {
 class LoadTodos extends TodosEvent {}
 
 class AddTodo extends TodosEvent {
-  final TodoModel todo;
+  final TodoEntity todo;
 
   const AddTodo(this.todo);
 
@@ -23,7 +24,7 @@ class AddTodo extends TodosEvent {
 }
 
 class UpdateTodo extends TodosEvent {
-  final TodoModel updatedTodo;
+  final TodoEntity updatedTodo;
 
   const UpdateTodo(this.updatedTodo);
 
@@ -35,7 +36,7 @@ class UpdateTodo extends TodosEvent {
 }
 
 class DeleteTodo extends TodosEvent {
-  final TodoModel todo;
+  final TodoEntity todo;
 
   const DeleteTodo(this.todo);
 
@@ -51,7 +52,7 @@ class ClearCompleted extends TodosEvent {}
 class ToggleAll extends TodosEvent {}
 
 class TodosUpdated extends TodosEvent {
-  final List<TodoModel> todos;
+  final List<TodoEntity> todos;
 
   const TodosUpdated({this.todos});
 
