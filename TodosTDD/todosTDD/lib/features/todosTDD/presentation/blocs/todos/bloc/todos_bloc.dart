@@ -40,20 +40,31 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
     }
   }
 
-  Stream<TodosState> _mapLoadTodosToState(
-    Either<Failure,List<TodoModel>> failureOrTodos) async* {
-    try {
-      _todosSubscription?.cancel();
-      //Stream<Either<Failure, Stream<List<TodoModel>>>> todos = _todosRepository.todos().asStream();
-      failureOrTodos.fold(
-        (failure) => TodosNotLoaded(), 
-        (todos) => add(TodosUpdated(todos)));
-      //failureOrTodos.fold(, (previous, element) => null)
-        //print(todos);
-    } catch (e) {
-      print(e);
-    }
+  Stream<TodosState> _mapLoadTodosToState(Either<Failure,Stream<List<TodoModel>>> failureOrTodos) async* {
+    _todosSubscription?.cancel();
+    //final failurOrTodos = _displayTodo.call(NoParams());
+
+    // _todosSubscription =
+    //     failureOrTodos.listen((todos) => add(TodosUpdated(todos: Right(todos))));
+    failureOrTodos.fold(
+      (failure) => TodosNotLoaded(),
+      (todos) => _todosSubscription = todos.listen((todos) => add(TodosUpdated(todos: todos))));
   }
+
+  // Stream<TodosState> _mapLoadTodosToState(
+  //   Either<Failure,List<TodoModel>> failureOrTodos) async* {
+  //   try {
+  //     _todosSubscription?.cancel();
+  //     //Stream<Either<Failure, Stream<List<TodoModel>>>> todos = _todosRepository.todos().asStream();
+  //     failureOrTodos.fold(
+  //       (failure) => TodosNotLoaded(), 
+  //       (todos) => add(TodosUpdated(todos)));
+  //     //failureOrTodos.fold(, (previous, element) => null)
+  //       //print(todos);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   Stream<TodosState> _mapTodosUpdateToState(TodosUpdated event) async* {
     yield TodosLoaded(event.todos);

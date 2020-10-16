@@ -4,9 +4,9 @@ import 'package:todosTDD/features/todosTDD/domain/entities/todos/todo_entity.dar
 
 abstract class TodosDataSource {
   Future<void> addNewTodo(TodoModel todo);
-  Future<TodoModel> deleteTodo(TodoModel todo);
-  Future<List<TodoModel>> todos();
-  Future<TodoModel> updateTodo(TodoModel todo);
+  Future<void> deleteTodo(TodoModel todo);
+  Stream<List<TodoModel>> todos();
+  Future<void> updateTodo(TodoModel todo);
 }
 
 class TodosDataSourceImpl implements TodosDataSource {
@@ -14,36 +14,36 @@ class TodosDataSourceImpl implements TodosDataSource {
 
   @override
   Future<void> addNewTodo(TodoModel todo) {
-    return todoCollection.add(todo.toEntity().toDocument());
+    return todoCollection.add(todo.toDocument());
   }
 
   @override
-  Future<TodoModel> deleteTodo(TodoModel todo) {
-    // TODO: implement deleteTodo
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<TodoModel>> todos() async{
-    QuerySnapshot qShot = await todoCollection.getDocuments();
-
-    return qShot.documents
-        .map((doc) => TodoModel.fromEntity(TodoEntity.fromSnapshot(doc)))
-        .toList();
+  Future<void> deleteTodo(TodoModel todo) {
+    return todoCollection.document(todo.id).delete();
   }
 
   // @override
-  // Stream<List<TodoModel>> todos() {
-  //   return todoCollection.snapshots().map((snapshot) {
-  //     return snapshot.documents
-  //         .map((doc) => TodoModel.fromEntity(TodoEntity.fromSnapshot(doc)))
-  //         .toList();
-  //   });
+  // Future<List<TodoModel>> todos() async{
+  //   QuerySnapshot qShot = await todoCollection.getDocuments();
+
+  //   return qShot.documents
+  //       .map((doc) => TodoModel.fromEntity(TodoModel.fromSnapshot(doc)))
+  //       .toList();
   // }
 
   @override
-  Future<TodoModel> updateTodo(TodoModel todo) {
-    // TODO: implement updateTodo
-    throw UnimplementedError();
+  Stream<List<TodoModel>> todos() {
+    return todoCollection.snapshots().map((snapshot) {
+      return snapshot.documents
+          .map((doc) => TodoModel.fromEntity(TodoModel.fromSnapshot(doc)))
+          .toList();
+    });
+  }
+
+  @override
+  Future<void> updateTodo(TodoModel todo) {
+    return todoCollection
+        .document(todo.id)
+        .updateData(todo.toDocument());
   }
 }

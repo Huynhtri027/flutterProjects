@@ -14,33 +14,37 @@ class TodosRepositoryImpl implements TodosRepository {
   
   
   @override
-  Future<Either<Failure, void>> addNewTodo(TodoModel todo) async{
+  Future<Either<Failure, void>> addNewTodo(TodoEntity todo) async{
       return Right(todosDataSource.addNewTodo(todo));
     }
   
     @override
-    Future<Either<Failure, TodoEntity>> deleteTodo(TodoModel todo) {
-      // TODO: implement deleteTodo
-      throw UnimplementedError();
+    Future<Either<Failure, void>> deleteTodo(TodoEntity todo) {
+      return todosDataSource.deleteTodo(todo);
     }
   
     @override
-    Future<Either<Failure, List<TodoModel>>> todos() async{
+    Future<Either<Failure, Stream<List<TodoModel>>>> todos() async{
       //return todosDataSource.todos();
-      return await _getTodos(() {
-        return todosDataSource.todos();
-      });
+      // return await _getTodos(() {
+      //   return todosDataSource.todos();
+      // });
+      try{
+        final todos = todosDataSource.todos();
+        return Right(todos);
+      } on Exception {
+        return Left(Failure('Wrong'));
+      }
     }
 
-    Future<Either<Failure, List<TodoModel>>> _getTodos(Future<List<TodoModel>> Function() param0) async{
-      final getTodos = await todos();
-      return getTodos;
-    }
+    // Future<Either<Failure, List<TodoModel>>> _getTodos(Future<List<TodoModel>> Function() param0) async{
+    //   final getTodos = await todos();
+    //   return getTodos;
+    // }
   
     @override
-    Future<Either<Failure, TodoEntity>> updateTodo(TodoModel todo) {
-    // TODO: implement updateTodo
-    throw UnimplementedError();
+    Future<Either<Failure, void>> updateTodo(TodoEntity todo) {
+    return todosDataSource.updateTodo(todo);
   }
 
 }

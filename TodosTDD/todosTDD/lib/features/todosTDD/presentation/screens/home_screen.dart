@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todosTDD/features/todosTDD/presentation/blocs/blocs.dart';
+import 'package:todosTDD/features/todosTDD/presentation/screens/filtered_todos.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -15,10 +16,10 @@ class HomeScreen extends StatelessWidget {
               //ExtraActions(),
             ],
           ),
-          //body: activeTab == AppTab.todos ? FilteredTodos() : Stats(),
-          body: Center(
-            child: Text('Todos will be displayed here'),
-          )
+          body: FilteredTodos()
+          // body: Center(
+          //   child: Text('Todos will be displayed here'),
+          // )
           // floatingActionButton: FloatingActionButton(
           //   onPressed: () {
           //     Navigator.pushNamed(context, '/addTodo');

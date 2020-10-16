@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todosTDD/features/todosTDD/presentation/blocs/blocs.dart';
+import 'package:todosTDD/features/todosTDD/presentation/blocs/filtered_todos/filtered_todos_barrel.dart';
 
 import 'features/todosTDD/presentation/blocs/simple_bloc_delegate.dart';
 import 'features/todosTDD/presentation/screens/home_screen.dart';
@@ -36,8 +37,10 @@ class MyApp extends StatelessWidget {
                 builder: (context, state) {
               if (state is TodosLoaded) {
                 return MultiBlocProvider(providers: [
-                  BlocProvider<TodosBloc>(
-                      create: (_) => sl<TodosBloc>()..add(LoadTodos()))
+                  
+                  BlocProvider<FilteredTodosBloc>(
+                      create: (_) => FilteredTodosBloc(
+                          todosBloc: BlocProvider.of<TodosBloc>(context))),
                 ], child: HomeScreen());
               }
               return Center(child: CircularProgressIndicator());

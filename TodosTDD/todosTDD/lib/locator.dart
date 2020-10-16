@@ -5,6 +5,7 @@ import 'package:todosTDD/features/todosTDD/domain/repositories/todos/todos_repos
 import 'package:todosTDD/features/todosTDD/domain/usecases/todos/add_new_todo.dart';
 import 'package:todosTDD/features/todosTDD/domain/usecases/todos/display_todos.dart';
 import 'package:todosTDD/features/todosTDD/presentation/blocs/blocs.dart';
+import 'package:todosTDD/features/todosTDD/presentation/blocs/filtered_todos/filtered_todos_barrel.dart';
 
 final sl = GetIt.instance;
 
@@ -23,4 +24,5 @@ Future<void> init() async {
 
   //BLocs
   sl.registerFactory(() => TodosBloc(displayTodo: sl())); //Passing USecases object here
+  sl.registerFactory(() => FilteredTodosBloc(todosBloc: sl()));
 }
