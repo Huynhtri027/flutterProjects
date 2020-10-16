@@ -7,14 +7,13 @@ import 'package:todosTDD/features/todosTDD/domain/repositories/todos/todos_repos
 
 import '../../../../../locator.dart';
 
-abstract class TodosUsecase implements BaseUseCase<TodosResult,NoParams> {}
+abstract class TodosUsecase implements BaseUseCase<TodosResult, NoParams> {}
 //Usecases and implementaion class contains same methods called up. And in Datasource we are writing the logic.
 //Here we have the impls class for each usecases.
-//In other project , we are having the use case with Rersult and params like this but 
+//In other project , we are having the use case with Rersult and params like this but
 //its having impl of usecases but in same file and then its using directly the repo function or impl fucntions.
 
 class AddNewTodoUC {
-
   final TodosRepository todosRepository;
 
   AddNewTodoUC(this.todosRepository);
@@ -24,32 +23,28 @@ class AddNewTodoUC {
   }
 }
 
-class DisplayTodoUC extends TodosResult{ 
-
+class DisplayTodoUC {
   TodosRepository todosRepository = sl();
 
   DisplayTodoUC(this.todosRepository);
 
-  Stream<List<TodoEntity>> call(TodosNoParams todosNoParams) {
+  Stream<List<TodoEntity>> call(NoParams todosNoParams) {
     return todosRepository.todos();
   }
+}
 
-  // @override
-  // Future<TodosResult> call(NoParams params) async{
-  //     return TodosResult(
-  //     odos: todosRepository.todos(),
-  //     );
+// class DisplayTodoUC extends TodosResult{  //Used in returning named params into Bloc callback
+//   odosRepository todosRepository = sl();
 
-  
+//   DisplayTodoUC(this.todosRepository);
 
-   //And in case of List<TodoModel> we can pass ProductDetailsResults and can be defined below
+//   odosResult call(NoParams todosNoParams) {
 
-  // @override
-  // Stream<TodosResult> call(NoParams params) {
-  //   return todosRepository.todos();
-  // }
-  }
-
+//     return TodosResult(
+//       odos: todosRepository.todos(),
+//       );
+//     //return todosRepository.todos();
+//   }
 
 class DeleteTodoUC {
   final TodosRepository todosRepository;
@@ -71,16 +66,6 @@ class UpdateTodoUC {
   }
 }
 
-
-class TodosParams extends Equatable {    //Here we can provide ProductDetailsParams here
-  final TodoModel todo;
-
-  TodosParams({@required this.todo});
-
-  @override
-  List<Object> get props => [todo];
-}
-
 class TodosResult extends UseCaseResult {
   final Stream<List<TodoEntity>> todos;
 
@@ -94,5 +79,3 @@ class TodosResult extends UseCaseResult {
   // TODO: implement result
   bool get result => throw UnimplementedError();
 }
-
-class TodosNoParams {}
